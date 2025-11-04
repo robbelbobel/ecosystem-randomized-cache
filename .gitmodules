@@ -4,3 +4,6 @@
 [submodule "functional-tests/riscv-tests"]
 	path = functional-tests/riscv-tests
 	url = https://github.com/riscv-software-src/riscv-tests.git
+[submodule "proteus-randomized-cache"]
+	path = proteus-randomized-cache
+	url = https://github.com/robbelbobel/proteus-randomized-cache
