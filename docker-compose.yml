@@ -18,4 +18,5 @@ services:
       - ./waveform-analysis:/ecosystem/waveform-analysis
       - ./install-scripts:/ecosystem/install-scripts
       - ./formal-verification:/ecosystem/formal-verification
+      - ./attacks:/ecosystem/attacks
     command: "/bin/bash"
