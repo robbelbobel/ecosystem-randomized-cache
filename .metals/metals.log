@@ -1316,3 +1316,5 @@ WARNING: Unmatched cancel notification for request id 3403
 2026.05.04 14:08:45 INFO  compiling core (1 scala source)
 2026.05.04 14:08:45 WARN  one feature warning; re-run with -feature for details
 2026.05.04 14:08:45 INFO  time: compiled core in 0.64s
+May 04, 2026 2:23:46 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
