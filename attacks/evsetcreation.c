@@ -7,7 +7,7 @@
 
 #define CACHE_SIZE 4 * 2 * 2 * 100 // sets * ways * skews
 
-#define THRESHOLD_CYCLES 75 // 80 for memory response
+#define THRESHOLD_CYCLES 45 // 80 for memory response
 
 bool probe(dyn_array* set, uint32_t* candidate) {
     volatile int32_t candidate_value = *candidate;
