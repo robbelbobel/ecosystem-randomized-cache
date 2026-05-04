@@ -5,28 +5,40 @@
 #include "performance.h"
 #include "dynamic_array.h"
 
-#define CACHE_SIZE 4 * 2 * 2 * 100 // sets * ways * skews
+#define CACHE_SIZE 4 * 2 * 2 // sets * ways * skews
 
-#define THRESHOLD_CYCLES 45 // 80 for memory response
+#define THRESHOLD_CYCLES 45 // Cold: 80 cycles, Warm: 40 cycles
 
 bool probe(dyn_array* set, uint32_t* candidate) {
     volatile int32_t candidate_value = *candidate;
 
+    /*
     for (size_t i = 0; i < set -> size; i++) 
     {
         volatile int32_t l = *(set->data[i]);
     }
+    */
+
 
     asm volatile("fence iorw, iorw");
 
+    candidate_value = *candidate;
+
     uint32_t beg_cycles = rdcycle();
-    volatile int32_t candidate_value_repeat = *candidate;
+
+    candidate_value = *candidate;
 
     asm volatile("fence iorw, iorw");
 
     uint32_t diff_cycles = rdcycle() - beg_cycles;
 
     printf("diff cycles: %u\n", diff_cycles);
+
+    if (diff_cycles > THRESHOLD_CYCLES) { // todo: HOW IS THIS ALWAYS TRUE?
+        printf("probe true! candidate: %u\n", candidate);
+    }else{
+        printf("not");
+    }
 
     return  diff_cycles > THRESHOLD_CYCLES;
 }
@@ -42,7 +54,7 @@ int main()
     // Initialize lines
     uint32_t** lines = malloc(CACHE_SIZE * 2 * sizeof(uint32_t*));
 
-    for(uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
+    for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
     {
         // Not Randomized!
         lines[i] = buffer + i;
@@ -50,9 +62,17 @@ int main()
 
     dyn_array* conflict_set = create_dyn_array();
 
-    for(uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
-    {
-        if(probe(conflict_set, lines[i])) {
+
+
+    for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
+    { 
+
+        probe(conflict_set, lines[i]);
+        continue;
+
+
+
+        if (!probe(conflict_set, lines[i])) {
             // Insert candidate into conflict set
             insert(conflict_set, lines[i]);
         }
@@ -60,6 +80,9 @@ int main()
         printf("lines[i]: %u\n", lines[i]);
     }
 
+    for(uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
+    {
+    }
 
     return 0;
 }
