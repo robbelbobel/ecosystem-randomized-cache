@@ -7,40 +7,29 @@
 
 #define CACHE_SIZE 4 * 2 * 2 // sets * ways * skews
 
-#define THRESHOLD_CYCLES 45 // Cold: 80 cycles, Warm: 40 cycles
+#define THRESHOLD_CYCLES 45 // Cold: 62 cycles, Warm: 31 cycles
 
-bool probe(dyn_array* set, uint32_t* candidate) {
-    volatile int32_t candidate_value = *candidate;
+bool probe(dyn_array* set, uint32_t* candidate, uint32_t* excl) {
+    // Read Candidate
+    volatile uint32_t sink = *candidate;
 
-    /*
-    for (size_t i = 0; i < set -> size; i++) 
+    for (uint32_t i = 0; i < set -> size; i++) 
     {
-        volatile int32_t l = *(set->data[i]);
+        if (set -> data[i] != excl) 
+        {
+            sink = *(set -> data[i]);
+        }
     }
-    */
-
-
-    asm volatile("fence iorw, iorw");
-
-    candidate_value = *candidate;
-
+    
     uint32_t beg_cycles = rdcycle();
 
-    candidate_value = *candidate;
+    sink = *candidate;
 
-    asm volatile("fence iorw, iorw");
+    uint32_t diff = rdcycle() - beg_cycles;
 
-    uint32_t diff_cycles = rdcycle() - beg_cycles;
+    printf("diff: %u\n", diff);
 
-    printf("diff cycles: %u\n", diff_cycles);
-
-    if (diff_cycles > THRESHOLD_CYCLES) { // todo: HOW IS THIS ALWAYS TRUE?
-        printf("probe true! candidate: %u\n", candidate);
-    }else{
-        printf("not");
-    }
-
-    return  diff_cycles > THRESHOLD_CYCLES;
+    return diff > THRESHOLD_CYCLES;
 }
 
 int main() 
@@ -62,27 +51,35 @@ int main()
 
     dyn_array* conflict_set = create_dyn_array();
 
-
-
     for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
     { 
-
-        probe(conflict_set, lines[i]);
-        continue;
-
-
-
-        if (!probe(conflict_set, lines[i])) {
+        if (!probe(conflict_set, lines[i], NULL)) {
             // Insert candidate into conflict set
             insert(conflict_set, lines[i]);
         }
-
-        printf("lines[i]: %u\n", lines[i]);
     }
 
-    for(uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
+    for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
     {
+        if (!contains(conflict_set, lines[i])) 
+        {
+            if (probe(conflict_set, lines[i], NULL)) 
+            {
+                dyn_array* eviction_set = create_dyn_array();
+                
+                for (uint32_t j = 0; j < conflict_set -> size; j++) 
+                {
+                    if (!probe(conflict_set, lines[i], conflict_set -> data[j]))
+                    {
+                        insert(eviction_set, conflict_set -> data[j]);
+                    }
+                }
+                
+                printf("eviction set found, size: %u\n", eviction_set -> size);
+                return 0; // Eviction set found?
+            }
+        }
     }
 
-    return 0;
+    return -1;
 }

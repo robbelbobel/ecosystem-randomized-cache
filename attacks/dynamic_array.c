@@ -23,3 +23,16 @@ void insert(dyn_array* arr, uint32_t* value)
     // Data not filled
     arr -> data[arr -> size++] = value;
 }
+
+bool contains(dyn_array* arr, uint32_t* value)
+{
+    for (uint32_t i = 0; i < arr -> size; i++) 
+    {
+        if (arr -> data[i] == value) 
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

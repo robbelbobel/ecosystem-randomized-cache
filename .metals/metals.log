@@ -1318,3 +1318,41 @@ WARNING: Unmatched cancel notification for request id 3403
 2026.05.04 14:08:45 INFO  time: compiled core in 0.64s
 May 04, 2026 2:23:46 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.05.05 15:09:12 INFO  compiling core (1 scala source)
+2026.05.05 15:09:12 INFO  time: compiled core in 0.63s
+2026.05.05 15:09:13 INFO  compiling core (1 scala source)
+2026.05.05 15:09:13 INFO  time: compiled core in 0.21s
+2026.05.05 15:09:15 INFO  compiling core (1 scala source)
+2026.05.05 15:09:15 INFO  time: compiled core in 0.16s
+2026.05.05 15:09:25 INFO  compiling core (1 scala source)
+2026.05.05 15:09:25 INFO  time: compiled core in 0.13s
+2026.05.05 15:09:26 INFO  compiling core (1 scala source)
+2026.05.05 15:09:26 INFO  time: compiled core in 0.12s
+2026.05.05 15:09:40 INFO  compiling core (1 scala source)
+2026.05.05 15:09:40 INFO  time: compiled core in 0.11s
+2026.05.05 15:10:28 INFO  compiling core (1 scala source)
+2026.05.05 15:10:28 INFO  time: compiled core in 0.13s
+2026.05.05 15:10:32 INFO  compiling core (1 scala source)
+2026.05.05 15:10:32 INFO  time: compiled core in 0.11s
+May 05, 2026 3:10:48 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7530
+2026.05.05 15:10:55 INFO  compiling core (1 scala source)
+2026.05.05 15:10:55 INFO  time: compiled core in 0.14s
+2026.05.05 15:11:10 INFO  compiling core (1 scala source)
+2026.05.05 15:11:10 INFO  time: compiled core in 0.11s
+2026.05.05 15:11:20 INFO  compiling core (1 scala source)
+2026.05.05 15:11:20 INFO  time: compiled core in 0.11s
+2026.05.05 15:11:21 INFO  compiling core (1 scala source)
+2026.05.05 15:11:21 INFO  time: compiled core in 93ms
+2026.05.05 15:11:41 INFO  compiling core (1 scala source)
+2026.05.05 15:11:41 WARN  one feature warning; re-run with -feature for details
+2026.05.05 15:11:41 INFO  time: compiled core in 0.92s
+2026.05.05 15:11:53 INFO  compiling core (1 scala source)
+2026.05.05 15:11:53 WARN  one feature warning; re-run with -feature for details
+2026.05.05 15:11:53 INFO  time: compiled core in 0.55s
+2026.05.05 15:49:59 INFO  compiling core (1 scala source)
+2026.05.05 15:50:00 WARN  one feature warning; re-run with -feature for details
+2026.05.05 15:50:00 INFO  time: compiled core in 1.4s
+2026.05.05 15:50:31 INFO  compiling core (1 scala source)
+2026.05.05 15:50:31 WARN  one feature warning; re-run with -feature for details
+2026.05.05 15:50:31 INFO  time: compiled core in 0.6s

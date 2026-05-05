@@ -15,5 +15,6 @@ typedef struct
 dyn_array* create_dyn_array();
 
 void insert(dyn_array* arr, uint32_t* value);
+bool contains(dyn_array* arr, uint32_t* value);
 
 #endif
