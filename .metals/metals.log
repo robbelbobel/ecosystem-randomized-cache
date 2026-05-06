@@ -1356,3 +1356,720 @@ WARNING: Unmatched cancel notification for request id 7530
 2026.05.05 15:50:31 INFO  compiling core (1 scala source)
 2026.05.05 15:50:31 WARN  one feature warning; re-run with -feature for details
 2026.05.05 15:50:31 INFO  time: compiled core in 0.6s
+May 06, 2026 11:26:40 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.05.06 16:07:57 INFO  compiling core (1 scala source)
+2026.05.06 16:07:59 INFO  time: compiled core in 1.83s
+2026.05.06 16:08:01 INFO  compiling core (1 scala source)
+2026.05.06 16:08:01 INFO  time: compiled core in 0.29s
+2026.05.06 16:08:04 INFO  compiling core (1 scala source)
+2026.05.06 16:08:04 INFO  time: compiled core in 0.86s
+2026.05.06 16:12:43 INFO  compiling core (1 scala source)
+2026.05.06 16:12:45 INFO  time: compiled core in 1.67s
+2026.05.06 16:13:16 INFO  compiling core (1 scala source)
+2026.05.06 16:13:18 INFO  time: compiled core in 1.23s
+2026.05.06 16:15:20 INFO  compiling core (1 scala source)
+2026.05.06 16:15:21 INFO  time: compiled core in 1.74s
+2026.05.06 16:18:07 INFO  compiling core (1 scala source)
+2026.05.06 16:18:08 INFO  time: compiled core in 1.81s
+2026.05.06 16:21:13 INFO  compiling core (1 scala source)
+2026.05.06 16:21:15 INFO  time: compiled core in 1.87s
+2026.05.06 16:22:28 INFO  compiling core (1 scala source)
+2026.05.06 16:22:28 INFO  time: compiled core in 0.14s
+2026.05.06 16:25:04 INFO  compiling core (1 scala source)
+2026.05.06 16:25:04 INFO  time: compiled core in 0.14s
+2026.05.06 16:25:04 INFO  compiling core (1 scala source)
+2026.05.06 16:25:04 INFO  time: compiled core in 54ms
+2026.05.06 16:29:14 INFO  compiling core (1 scala source)
+2026.05.06 16:29:14 INFO  time: compiled core in 62ms
+2026.05.06 16:29:36 INFO  compiling core (1 scala source)
+2026.05.06 16:29:36 INFO  time: compiled core in 55ms
+May 06, 2026 4:29:59 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 9928
+2026.05.06 16:30:01 INFO  compiling core (1 scala source)
+2026.05.06 16:30:01 INFO  time: compiled core in 65ms
+2026.05.06 16:31:44 INFO  compiling core (1 scala source)
+2026.05.06 16:31:44 INFO  time: compiled core in 61ms
+2026.05.06 16:32:09 INFO  compiling core (1 scala source)
+2026.05.06 16:32:09 INFO  time: compiled core in 54ms
+2026.05.06 16:33:51 INFO  compiling core (1 scala source)
+2026.05.06 16:33:51 INFO  time: compiled core in 54ms
+2026.05.06 16:34:17 INFO  compiling core (1 scala source)
+2026.05.06 16:34:17 INFO  time: compiled core in 49ms
+2026.05.06 16:34:22 INFO  compiling core (1 scala source)
+2026.05.06 16:34:22 INFO  time: compiled core in 47ms
+2026.05.06 16:34:48 INFO  compiling core (1 scala source)
+2026.05.06 16:34:48 INFO  time: compiled core in 49ms
+2026.05.06 16:34:58 INFO  compiling core (1 scala source)
+2026.05.06 16:34:58 INFO  time: compiled core in 0.46s
+2026.05.06 16:35:42 INFO  compiling core (1 scala source)
+2026.05.06 16:35:42 INFO  time: compiled core in 0.21s
+May 06, 2026 4:35:43 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:43 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:43 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-43-263.md")
+May 06, 2026 4:35:45 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:45 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:45 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-45-102.md")
+May 06, 2026 4:35:45 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:45 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:45 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-45-646.md")
+May 06, 2026 4:35:45 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:45 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:45 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-45-753.md")
+May 06, 2026 4:35:46 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:46 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:46 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-46-961.md")
+May 06, 2026 4:35:47 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:46 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:46 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-47-093.md")
+May 06, 2026 4:35:47 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:46 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:46 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-47-693.md")
+May 06, 2026 4:35:47 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:46 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:46 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-47-802.md")
+May 06, 2026 4:35:48 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:48 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:48 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-48-128.md")
+May 06, 2026 4:35:48 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:48 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:48 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-48-859.md")
+May 06, 2026 4:35:48 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:48 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:48 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-48-967.md")
+May 06, 2026 4:35:50 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:50 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:50 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-50-726.md")
+May 06, 2026 4:35:51 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:50 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:50 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-51-619.md")
+May 06, 2026 4:35:51 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:51 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:51 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-51-752.md")
+May 06, 2026 4:35:51 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:51 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:51 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-51-895.md")
+May 06, 2026 4:35:52 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:51 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:51 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-52-304.md")
+May 06, 2026 4:35:52 PM scala.meta.internal.pc.CompilerAccess retryWithCleanCompiler
+INFO: compiler crashed due to an error in the Scala compiler, retrying with new compiler instance.
+2026.05.06 16:35:52 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:35:52 INFO  scala.reflect.internal.FatalError: 
+  ThisType(value $anonfun) for sym which is not a class
+     while compiling: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+        during phase: globalPhase=<no phase>, enteringPhase=parser
+     library version: version 2.12.20
+    compiler version: version 2.12.18
+  reconstructed args: -classpath /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-3EER-df6QfWC-_MqQZNAmg==:/Users/robbetiteca/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/Users/robbetiteca/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar -Xplugin-require:semanticdb -Yrangepos -Ymacro-expand:discard -Ycache-plugin-class-loader:last-modified -Ypresentation-any-thread
+
+  last tree to typer: TypeTree(<refinement of spinal.core.Area>)
+       tree position: line 108 of file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+            tree tpe: spinal.core.Area{val rngService: riscv.RngService; val rng: riscv.RngIo}
+              symbol: <refinement of spinal.core.Area>
+   symbol definition: class <refinement> extends Area (a RefinementClassSymbol)
+      symbol package: riscv.plugins
+       symbol owners: <refinement of spinal.core.Area> -> value cacheArea -> method connect -> class Cache
+           call site: <none> in <none>
+
+== Source file context for tree position ==
+
+   105   }
+   106 
+   107   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+   108     val cacheArea = pipeline plug new Area {
+   109       val rngService = pipeline.service[RngService]
+   110       val rng = new RngIo
+   111       rng.rdata_request := False // TODO: This should be handled by isSlave!! (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-35-52-792.md")
+2026.05.06 16:35:52 INFO  compiling core (1 scala source)
+2026.05.06 16:35:52 INFO  time: compiled core in 0.15s
+2026.05.06 16:36:02 INFO  compiling core (1 scala source)
+2026.05.06 16:36:02 INFO  time: compiled core in 0.13s
+2026.05.06 16:36:39 INFO  compiling core (1 scala source)
+2026.05.06 16:36:39 INFO  time: compiled core in 0.16s
+2026.05.06 16:36:50 INFO  compiling core (1 scala source)
+2026.05.06 16:36:50 INFO  time: compiled core in 57ms
+2026.05.06 16:37:02 INFO  compiling core (1 scala source)
+2026.05.06 16:37:02 INFO  time: compiled core in 52ms
+2026.05.06 16:37:05 INFO  compiling core (1 scala source)
+2026.05.06 16:37:05 INFO  time: compiled core in 0.14s
+2026.05.06 16:38:11 INFO  Created report: Optional[file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala]
+2026.05.06 16:38:11 INFO  java.lang.StringIndexOutOfBoundsException: Range [6549, 6549 + -3) out of bounds for length 25016 (full report at: "/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/.reports/metals-full/2026-05-06/r_compiler-error_(core)_16-38-11-482.md")
+2026.05.06 16:38:15 INFO  compiling core (1 scala source)
+2026.05.06 16:38:15 INFO  time: compiled core in 0.14s
+May 06, 2026 4:38:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 12326
+2026.05.06 16:38:18 INFO  compiling core (1 scala source)
+2026.05.06 16:38:18 INFO  time: compiled core in 0.13s
+2026.05.06 16:39:54 INFO  compiling core (1 scala source)
+2026.05.06 16:39:54 INFO  time: compiled core in 57ms
+2026.05.06 16:39:58 INFO  compiling core (1 scala source)
+2026.05.06 16:39:58 INFO  time: compiled core in 47ms
+2026.05.06 16:40:11 INFO  compiling core (1 scala source)
+2026.05.06 16:40:11 INFO  time: compiled core in 0.13s
+2026.05.06 16:42:21 INFO  compiling core (1 scala source)
+2026.05.06 16:42:21 INFO  time: compiled core in 0.16s
+2026.05.06 16:42:47 INFO  compiling core (1 scala source)
+2026.05.06 16:42:47 INFO  time: compiled core in 0.12s
+2026.05.06 16:43:54 INFO  compiling core (1 scala source)
+2026.05.06 16:43:54 INFO  time: compiled core in 0.15s
+2026.05.06 16:44:16 INFO  compiling core (1 scala source)
+2026.05.06 16:44:16 INFO  time: compiled core in 49ms
+2026.05.06 16:44:29 INFO  compiling core (1 scala source)
+2026.05.06 16:44:29 INFO  time: compiled core in 0.14s
+May 06, 2026 4:44:30 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:32 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:36 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+2026.05.06 16:44:38 INFO  compiling core (1 scala source)
+2026.05.06 16:44:38 INFO  time: compiled core in 55ms
+2026.05.06 16:44:47 INFO  compiling core (1 scala source)
+2026.05.06 16:44:47 INFO  time: compiled core in 0.12s
+May 06, 2026 4:44:47 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:47 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:49 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:52 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+2026.05.06 16:44:53 INFO  compiling core (1 scala source)
+2026.05.06 16:44:53 INFO  time: compiled core in 0.12s
+May 06, 2026 4:44:53 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:57 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:57 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:44:57 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:07 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+2026.05.06 16:45:07 INFO  compiling core (1 scala source)
+2026.05.06 16:45:07 INFO  time: compiled core in 0.12s
+May 06, 2026 4:45:08 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:12 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:12 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:13 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:13 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:13 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:13 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:39 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:41 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:42 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:42 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:42 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:42 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:43 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:43 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:44 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:44 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:44 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:44 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:45 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:51 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:52 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:53 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Select,scala.reflect.internal.Trees$Select,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$Assign, auto import position was Some(AutoImportPosition(173,0,false))
+2026.05.06 16:45:53 INFO  compiling core (1 scala source)
+2026.05.06 16:45:53 INFO  time: compiled core in 0.12s
+May 06, 2026 4:45:54 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:54 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:55 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:56 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:57 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:45:58 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:40 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:40 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:44 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:46 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:47 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:49 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:50 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:53 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:58 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:58 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block,scala.reflect.internal.Trees$Function, auto import position was Some(AutoImportPosition(173,0,false))
+May 06, 2026 4:46:59 PM scala.meta.internal.pc.AutoImportsProvider$$anonfun$1 applyOrElse
+WARNING: Could not infer edits for riscv.plugins.Cache, tree around the position were scala.reflect.internal.Trees$Ident,scala.reflect.internal.Trees$Select,scala.reflect.internal.Trees$Apply,scala.reflect.internal.Trees$ValDef,scala.reflect.internal.Trees$Block, auto import position was Some(AutoImportPosition(173,0,false))
+2026.05.06 16:46:59 INFO  compiling core (1 scala source)
+2026.05.06 16:46:59 INFO  time: compiled core in 0.13s
+2026.05.06 16:47:06 INFO  compiling core (1 scala source)
+2026.05.06 16:47:06 INFO  time: compiled core in 0.11s
+2026.05.06 16:47:11 INFO  compiling core (1 scala source)
+2026.05.06 16:47:11 INFO  time: compiled core in 0.12s
+2026.05.06 16:47:42 INFO  compiling core (1 scala source)
+2026.05.06 16:47:42 INFO  time: compiled core in 0.12s
+2026.05.06 16:47:53 INFO  compiling core (1 scala source)
+2026.05.06 16:47:53 INFO  time: compiled core in 0.12s
+2026.05.06 16:48:09 INFO  compiling core (1 scala source)
+2026.05.06 16:48:09 INFO  time: compiled core in 0.13s
+2026.05.06 16:48:49 INFO  compiling core (1 scala source)
+2026.05.06 16:48:49 INFO  time: compiled core in 60ms
+2026.05.06 16:48:52 INFO  compiling core (1 scala source)
+2026.05.06 16:48:52 INFO  time: compiled core in 0.12s
+2026.05.06 16:50:15 INFO  compiling core (1 scala source)
+2026.05.06 16:50:15 INFO  time: compiled core in 0.13s
+2026.05.06 16:51:27 INFO  compiling core (1 scala source)
+2026.05.06 16:51:27 INFO  time: compiled core in 0.13s
+2026.05.06 16:51:34 INFO  compiling core (1 scala source)
+2026.05.06 16:51:34 INFO  time: compiled core in 0.12s
+2026.05.06 16:51:55 INFO  compiling core (1 scala source)
+2026.05.06 16:51:55 INFO  time: compiled core in 0.11s
+2026.05.06 16:52:05 INFO  compiling core (1 scala source)
+2026.05.06 16:52:06 INFO  time: compiled core in 1.09s

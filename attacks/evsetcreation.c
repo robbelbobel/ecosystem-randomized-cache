@@ -50,7 +50,7 @@ int main()
     }
 
     dyn_array* conflict_set = create_dyn_array();
-
+    printf("\n\nconflict set: \n");
     for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
     { 
         if (!probe(conflict_set, lines[i], NULL)) {
@@ -59,6 +59,7 @@ int main()
         }
     }
 
+    printf("\n\neviction set: \n");
     for (uint32_t i = 0; i < CACHE_SIZE * 2; i++) 
     {
         if (!contains(conflict_set, lines[i])) 
@@ -71,12 +72,13 @@ int main()
                 {
                     if (!probe(conflict_set, lines[i], conflict_set -> data[j]))
                     {
+
                         insert(eviction_set, conflict_set -> data[j]);
                     }
                 }
                 
                 printf("eviction set found, size: %u\n", eviction_set -> size);
-                return 0; // Eviction set found?
+                return 0;
             }
         }
     }
