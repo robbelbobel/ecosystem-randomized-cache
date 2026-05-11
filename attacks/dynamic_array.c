@@ -4,29 +4,29 @@ dyn_array* create_dyn_array()
 {
     dyn_array* arr = malloc(sizeof(dyn_array));
 
-    arr -> data = malloc(sizeof(uint32_t*));
+    arr -> data = malloc(1 * sizeof(char*));
     arr -> size = 0;
     arr -> capacity = 1;
 
     return arr;
 }
 
-void insert(dyn_array* arr, uint32_t* value)
+void insert(dyn_array* arr, char* value)
 {
     if (arr -> size >= arr -> capacity) 
     {
         // Expand Array
         arr -> capacity *= 2;
-        arr -> data = realloc(arr -> data, arr -> capacity * sizeof(uint32_t*));
+        arr -> data = realloc(arr -> data, arr -> capacity * sizeof(char*));
     }
 
     // Data not filled
     arr -> data[arr -> size++] = value;
 }
 
-bool contains(dyn_array* arr, uint32_t* value)
+bool contains(dyn_array* arr, char* value)
 {
-    for (uint32_t i = 0; i < arr -> size; i++) 
+    for (int i = 0; i < arr -> size; i++) 
     {
         if (arr -> data[i] == value) 
         {

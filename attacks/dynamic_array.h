@@ -6,7 +6,7 @@
 
 typedef struct 
 {
-    uint32_t** data;
+    char** data;
     size_t size;
     size_t capacity;
 } dyn_array;
@@ -14,7 +14,7 @@ typedef struct
 // Helpers
 dyn_array* create_dyn_array();
 
-void insert(dyn_array* arr, uint32_t* value);
-bool contains(dyn_array* arr, uint32_t* value);
+void insert(dyn_array* arr, char* value);
+bool contains(dyn_array* arr, char* value);
 
 #endif
