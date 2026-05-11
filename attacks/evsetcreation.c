@@ -14,6 +14,8 @@ bool probe(dyn_array* set, char* candidate, char* excl) {
     // Read Candidate
     volatile char sink = *candidate;
 
+    asm volatile ("fence rw, rw" ::: "memory");
+
     for (int i = 0; i < set -> size; i++) 
     {
         if (set -> data[i] != excl) 
@@ -21,12 +23,18 @@ bool probe(dyn_array* set, char* candidate, char* excl) {
             sink = *(set -> data[i]);
         }
     }
-    
+
+    asm volatile ("fence rw, rw" ::: "memory");
+
     int beg_cycles = rdcycle();
 
     sink = *candidate;
 
+    asm volatile ("fence rw, rw" ::: "memory");
+
     int diff = rdcycle() - beg_cycles;
+    
+    printf("diff: %i\n", diff);
 
     // Returns whether an eviction has occurred
     return diff > THRESHOLD_CYCLES;
@@ -50,7 +58,6 @@ int main()
     }
 
     dyn_array* conflict_set = create_dyn_array();
-    printf("\n\nconflict set: \n");
     for (int i = 0; i < CACHE_SIZE * 2; i++) 
     { 
         if (!probe(conflict_set, lines[i], NULL)) {
@@ -59,7 +66,8 @@ int main()
         }
     }
 
-    printf("\n\neviction set: \n");
+    printf("conflict set size: %u\n", conflict_set->size);
+
     for (int i = 0; i < CACHE_SIZE * 2; i++) 
     {
         if (!contains(conflict_set, lines[i])) 
@@ -76,7 +84,10 @@ int main()
                     }
                 }
                 
-                printf("eviction set found, size: %u\n", eviction_set -> size);
+                if (eviction_set -> size != 0) {
+                    printf("eviction set found, size: %u\n", eviction_set -> size);
+                    return 0;
+                }
             }
         }
     }
