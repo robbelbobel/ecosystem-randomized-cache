@@ -34,8 +34,6 @@ bool probe(dyn_array* set, char* candidate, char* excl) {
 
     int diff = rdcycle() - beg_cycles;
     
-    printf("diff: %i\n", diff);
-
     // Returns whether an eviction has occurred
     return diff > THRESHOLD_CYCLES;
 }

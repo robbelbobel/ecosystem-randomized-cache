@@ -19,4 +19,5 @@ services:
       - ./install-scripts:/ecosystem/install-scripts
       - ./formal-verification:/ecosystem/formal-verification
       - ./attacks:/ecosystem/attacks
+      - ./scripts:/ecosystem/scripts
     command: "/bin/bash"
