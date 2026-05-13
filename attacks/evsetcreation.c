@@ -8,7 +8,7 @@
 #define MEMBUS_WIDTH 16
 #define CACHE_SIZE 4 * 2 * 2 * MEMBUS_WIDTH // sets * ways * skews * MEMBUS_WIDTH
 
-#define THRESHOLD_CYCLES 130 // Cold: 192 cycles, Warm: 124 cycles
+#define THRESHOLD_CYCLES 50 // Cold: 90 cycles, Warm: 22 cycles
 
 bool probe(dyn_array* set, char* candidate, char* excl) {
     // Read Candidate
@@ -89,6 +89,8 @@ int main()
             }
         }
     }
+
+    printf("No eviction set found!\n");
 
     return -1;
 }
