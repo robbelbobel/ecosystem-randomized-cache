@@ -6,7 +6,7 @@
 #include "dynamic_array.h"
 
 #define MEMBUS_WIDTH 16
-#define CACHE_SIZE (4 * 2 * 2 * MEMBUS_WIDTH) // sets * ways * skews * MEMBUS_WIDTH
+#define CACHE_SIZE (16 * 4 * 2 * MEMBUS_WIDTH) // sets * ways * skews * MEMBUS_WIDTH
 
 int get_threshold() {
     char* buffer = malloc(1024 * 1024 * sizeof(char));

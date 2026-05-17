@@ -70,7 +70,7 @@ try:
         lines[69] = f"sets = {i.sets},\n"
         lines[70] = f"ways = {i.ways},\n"
         lines[71] = f"skews = {i.skews},\n"
-        lines[73] = f"randomizedSetIndexing = {i.randomized},\n"
+        lines[73] = f"randomizedSetIndexing = {str(i.randomized).lower()},\n"
         lines[74] = f"replacementPolicy = ReplacementPolicy.{i.replacement_policy.name},\n"
         lines[75] = f"skewApproach = SkewApproach.{i.skew_approach.name},\n"
         lines[76] = f"invalidTags = {i.invalid_tags},\n"
