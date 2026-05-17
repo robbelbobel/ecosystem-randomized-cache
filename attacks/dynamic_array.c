@@ -11,6 +11,12 @@ dyn_array* create_dyn_array()
     return arr;
 }
 
+void free_dyn_array(dyn_array* arr) 
+{
+    free(arr -> data);
+    free(arr);
+}
+
 void insert(dyn_array* arr, char* value)
 {
     if (arr -> size >= arr -> capacity) 
@@ -30,6 +36,20 @@ bool contains(dyn_array* arr, char* value)
     {
         if (arr -> data[i] == value) 
         {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool remove_el(dyn_array* arr, char* value)
+{
+    for (int i = 0; i < arr -> size; i++)
+    {
+        if (arr -> data[i] == value) {
+            arr -> data[i] = arr -> data[arr -> size - 1];
+            arr -> size--;
             return true;
         }
     }

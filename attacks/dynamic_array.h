@@ -13,8 +13,11 @@ typedef struct
 
 // Helpers
 dyn_array* create_dyn_array();
+void free_dyn_array(dyn_array* arr);
 
 void insert(dyn_array* arr, char* value);
 bool contains(dyn_array* arr, char* value);
+bool remove_el(dyn_array* arr, char* value);
+
 
 #endif
