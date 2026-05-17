@@ -58,12 +58,13 @@ print("Making a backup of Core.scala...")
 os.chdir ("/ecosystem/core/src/main/scala/riscv")
 subprocess.run(["cp", "./Core.scala", "/ecosystem/scripts/Core.bak.scala"], check=True)
 
-# Make Benchmarks
 try:
-    print("Activating python3 virtual environment...")
-    os.chdir("/ecosystem")
-    subprocess.run(['source', '.venv/bin/activate'], check=True)
+    # Make Directories
+    print("Inializing directories...")
+    os.makedirs('/ecosystem/scripts/output/bench', exist_ok=True)
+    os.makedirs('/ecosystem/scripts/output/cost', exist_ok=True)
 
+    # Make Benchmarks
     print("Making benchmarks...")
     os.chdir("/ecosystem/benchmarks/embench")
     subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
@@ -94,12 +95,12 @@ try:
         
         print(f"Starting cost analysis {idx}")
         os.chdir("/ecosystem")
-        with open(f"cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
-            subprocess.run(['./eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib'], check=True, stdout=file)
+        with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+            subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
 
         print(f"Starting benchmark {idx}...")
         os.chdir("/ecosystem/benchmarks/embench")
-        with open(f"bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+        with open(f"/ecosytem/scripts/output/bench/bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
             subprocess.run(['python3',
                             'benchmark_speed.py',
                             '--target-module=run_proteus', 
