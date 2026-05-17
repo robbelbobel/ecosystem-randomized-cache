@@ -55,8 +55,11 @@ configurations: list[Configuration] = [
 ### LOGIC ###
 # Cache Configuration Backup
 print("Making a backup of Core.scala...")
-os.chdir ("/ecosystem/core/src/main/scala/riscv")
-subprocess.run(["cp", "./Core.scala", "/ecosystem/scripts/Core.bak.scala"], check=True)
+subprocess.run(["cp", "/ecosystem/core/src/main/scala/riscv/Core.scala", "/ecosystem/scripts/Core.bak.scala"], check=True)
+
+simulation_error = 0
+cost_error = 0
+bench_error = 0
 
 try:
     # Make Directories
@@ -91,26 +94,39 @@ try:
 
         print("Building simulation...")
         os.chdir("/ecosystem/")
-        subprocess.run(["make", "-C", "simulation"], check=True)
+        try:
+            subprocess.run(["make", "-C", "simulation"], check=True)
+        except Exception as e:
+            print(f"Simulation error: {e}\n Continuing...\n")
+            simulation_error += 1
+            continue
         
         print(f"Starting cost analysis {idx}")
         os.chdir("/ecosystem")
-        with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
-            subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
+        try:
+            with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
+        except Exception as e:
+            print(f"Cost analysis error: {e}\n")
+            cost_error += 1
 
         print(f"Starting benchmark {idx}...")
         os.chdir("/ecosystem/benchmarks/embench")
-        with open(f"/ecosystem/scripts/output/bench/bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
-            subprocess.run(['python3',
-                            'benchmark_speed.py',
-                            '--target-module=run_proteus', 
-                            '--timeout=5400', 
-                            '--absolute'], check=True, stdout=file)
+        try:
+            with open(f"/ecosystem/scripts/output/bench/bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                subprocess.run(['python3',
+                                'benchmark_speed.py',
+                                '--target-module=run_proteus', 
+                                '--timeout=5400', 
+                                '--absolute'], check=True, stdout=file)
+        except Exception as e:
+            print(f"Benchmark error: {e}\n")
+            bench_error += 1
             
 except Exception as e:
-    print(f"ERROR! {e}")
+    print(f"Fatal error: {e}\nStopping Execution...\n")
 finally:
-    print("Exiting...")
     os.chdir ("/ecosystem/core/src/main/scala/riscv/")
     os.remove("./Core.scala")
-    subprocess.run(["mv", "/ecosystem/scripts/Core.bak.scala", "./Core.scala"], check=True)
+    subprocess.run(["mv", "/ecosystem/scripts/Core.bak.scala", "/ecosystem/core/src/main/scala/riscv/Core.scala"], check=True)
+    print(f"Evaluation finished!\nSimulation errors: {simulation_error}\nCost errors: {cost_error}\nBench errors: {bench_error}\n")
