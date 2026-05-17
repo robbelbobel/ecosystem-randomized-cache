@@ -107,7 +107,6 @@ try:
                             '--timeout=5400', 
                             '--absolute'], check=True, stdout=file)
             
-        os.chdir("")
 except Exception as e:
     print(f"ERROR! {e}")
 finally:
