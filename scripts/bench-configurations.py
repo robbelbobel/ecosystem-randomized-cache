@@ -45,6 +45,11 @@ configurations: list[Configuration] = [
                     SkewApproach.RS,
                     0,
                     EvictionPolicy.LE),
+    Configuration(32, 2, 2, True,
+                    ReplacementPolicy.PLRU,
+                    SkewApproach.RS,
+                    0,
+                    EvictionPolicy.LE),
 ]
 
 ### LOGIC ###
@@ -54,11 +59,15 @@ os.chdir ("/ecosystem/core/src/main/scala/riscv")
 subprocess.run(["cp", "./Core.scala", "/ecosystem/scripts/Core.bak.scala"], check=True)
 
 # Make Benchmarks
-print("Making benchmarks...")
-os.chdir("/ecosystem/benchmarks/embench")
-subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
-
 try:
+    print("Activating python3 virtual environment...")
+    os.chdir("/ecosystem")
+    subprocess.run(['source', '.venv/bin/activate'], check=True)
+
+    print("Making benchmarks...")
+    os.chdir("/ecosystem/benchmarks/embench")
+    subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
+
     for idx, i in enumerate(configurations):
         # Modify Configuration
         print("Modifying Core.scala")
@@ -82,15 +91,22 @@ try:
         print("Building simulation...")
         os.chdir("/ecosystem/")
         subprocess.run(["make", "-C", "simulation"], check=True)
+        
+        print(f"Starting cost analysis {idx}")
+        os.chdir("/ecosystem")
+        with open(f"cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+            subprocess.run(['./eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib'], check=True, stdout=file)
 
         print(f"Starting benchmark {idx}...")
         os.chdir("/ecosystem/benchmarks/embench")
-        with open(f"results_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+        with open(f"bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
             subprocess.run(['python3',
                             'benchmark_speed.py',
                             '--target-module=run_proteus', 
                             '--timeout=5400', 
                             '--absolute'], check=True, stdout=file)
+            
+        os.chdir("")
 except Exception as e:
     print(f"ERROR! {e}")
 finally:
