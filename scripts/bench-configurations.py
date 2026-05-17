@@ -100,7 +100,7 @@ try:
 
         print(f"Starting benchmark {idx}...")
         os.chdir("/ecosystem/benchmarks/embench")
-        with open(f"/ecosytem/scripts/output/bench/bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+        with open(f"/ecosystem/scripts/output/bench/bench_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
             subprocess.run(['python3',
                             'benchmark_speed.py',
                             '--target-module=run_proteus', 
