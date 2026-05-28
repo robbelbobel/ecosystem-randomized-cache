@@ -1,0 +1,22 @@
+/ecosystem/benchmarks/embench/bd/src/aha-mont64/aha-mont64
+Clock cycles: 11825718
+RET=0
+
+
+cycles: 11825718.0
+11825718.0
+/ecosystem/benchmarks/embench/bd/src/crc32/crc32
+Clock cycles: 28890308
+RET=0
+
+
+cycles: 28890308.0
+28890308.0
+/ecosystem/benchmarks/embench/bd/src/depthconv/depthconv
+Clock cycles: 19926865
+RET=0
+
+
+cycles: 19926865.0
+19926865.0
+/ecosystem/benchmarks/embench/bd/src/edn/edn

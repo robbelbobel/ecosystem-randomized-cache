@@ -113,6 +113,8 @@ try:
     os.chdir("/ecosystem/benchmarks/embench")
     subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
     for j in range(0, 10):
+        os.makedirs(f'/ecosystem/scripts/output/bench/{j}', exist_ok=True)
+
         for idx, i in enumerate(configurations):
             # Modify Configuration
             print("Modifying Core.scala")
@@ -146,7 +148,7 @@ try:
             os.chdir("/ecosystem")
             if j == 0:
                 try:
-                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}{i.ways}{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}{i.randomized}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
                         subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
                 except Exception as e:
                     print(f"Cost analysis error: {e}\n")
