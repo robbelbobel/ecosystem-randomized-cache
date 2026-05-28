@@ -18,7 +18,7 @@ $(EXE_FILE): $(BUILD_DIR)/$(VERILATOR_NAME).mk main.cpp
 	make -C $(BUILD_DIR) -f $(VERILATOR_NAME).mk $(EXE_NAME)
 
 $(BUILD_DIR)/$(VERILATOR_NAME).mk: $(VERILOG_INPUT)
-	verilator --cc --exe --trace-fst -O3 -CFLAGS "$(CFLAGS)" -Wno-WIDTH -Wno-UNOPTFLAT -Wno-CMPCONST -Wno-UNSIGNED -Mdir $(BUILD_DIR) $(VERILOG_INPUT) main.cpp -o $(EXE_NAME)
+	verilator --cc --exe --trace-fst -O3 -feature -CFLAGS "$(CFLAGS)" -Wno-WIDTH -Wno-UNOPTFLAT -Wno-CMPCONST -Wno-UNSIGNED -Mdir $(BUILD_DIR) $(VERILOG_INPUT) main.cpp -o $(EXE_NAME)
 
 $(VERILOG_INPUT): $(BASE_DIR)/$(VERILOG_FILE_NAME)
 	mkdir -p $(@D)

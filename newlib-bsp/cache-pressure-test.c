@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MEM_SZ 256
+#define MEM_SZ 128
 
 static volatile bool keepRunning = true;
 
@@ -14,10 +14,7 @@ int main() {
     volatile char sink;
 
     int i = 0;
-    while ((i / MEM_SZ) < 3) {
-        printf("i: %i\n", i);
-        sink = buff[i++ % MEM_SZ];
-    }
+    while (keepRunning) sink = buff[i++ % MEM_SZ];
 
     free(buff);
 

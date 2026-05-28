@@ -5,7 +5,6 @@
 
 int main() {
     uint32_t* buffer = malloc(1024 * 1024 * sizeof(uint32_t));
-    printf("buf addr: %p\n", buffer);
 
     volatile uint32_t val;
 

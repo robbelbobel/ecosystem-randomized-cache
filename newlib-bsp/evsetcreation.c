@@ -118,10 +118,6 @@ int main(int argc, char** argv)
                     }
                 }
                 
-                if (eviction_set -> size != 0) {
-                    printf("Eviction set found! Size: %i\n", eviction_set -> size);
-                }
-                
                 for (int j = 0; j < eviction_set -> size; j++)
                 {
                     remove_el(conflict_set, eviction_set -> data[j]);
@@ -131,6 +127,8 @@ int main(int argc, char** argv)
             }
         }
     }
+
+    printf("No eviction set found!\n");
 
     return -1;
 }
