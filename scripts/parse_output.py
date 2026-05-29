@@ -49,7 +49,8 @@ with open(os.path.join(os.getcwd(), "bench.csv"), 'w') as bench_csv:
                         rnge = int(line.split(' ')[-1].replace(',', ''))
             
             writer.writerow([iteration] + parsed + [mean, sd, rnge])
-
+        
+        writer.writerow([])
 print("cost")
 
 with open(os.path.join(os.getcwd(), "cost.csv"), 'w') as cost_csv:
