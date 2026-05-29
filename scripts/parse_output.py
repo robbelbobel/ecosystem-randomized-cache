@@ -4,54 +4,69 @@ import csv
 from dataclasses import dataclass
 from enum import Enum
 
-### DATA STRUCTURES ###
-class ReplacementPolicy(Enum):
-    """ Replacement Policy """
-    PLRU = "PLRU" # Pseudo-LRU
-    RAN = "RAN" # Randomized
-
-class SkewApproach(Enum):
-    """ Skew Approach """
-    RS = "RS" # Random Selection
-    LA = "LA" # Load Aware
-
-class EvictionPolicy(Enum):
-    """ Eviction Policy """
-    LE = "LE" # Local Eviction
-    GE = "GE" # Global Eviction
-
-@dataclass
-class Configuration:
-    """ Represents a cache configuration """
-    sets: int
-    ways: int
-    skews: int
-    replacement_policy: ReplacementPolicy
-    skew_approach: SkewApproach
-    invalid_tags: int
-    eviction_policy: EvictionPolicy
-
 print("Starting parse...")
 
-def parse_filename(filename: str) -> Configuration:
+def parse_filename(filename: str) -> list[str]:
     ''' Parses a filename into a Configuration '''
-    spl = filename.split('_')
+    split = filename.split('_')[1:] # Remove bench_ or cost_
 
-    return Configuration(
-        sets=int(spl[1]),
-        ways=int(spl[2]),
-        skews=int(spl[3]),
-        replacement_policy=ReplacementPolicy(spl[4]),
-        skew_approach=SkewApproach(spl[5]),
-        invalid_tags=int(spl[6]),
-        eviction_policy=EvictionPolicy(spl[7]),
-    )
+    split[-1] = split[-1][:-4] # Remove .txt
+
+    for i in range(0, len(split)):
+        if '.' in split[i]:
+            split[i] = split[i].split('.')[-1] # Handle Enums
+    
+    return split
 
 # Bench
-for iteration in os.listdir(os.path.join(os.getcwd(), 'output', 'bench')):
-    for filename in os.listdir(os.path.join(os.getcwd(), 'output', 'bench', iteration)):
-        with open(os.path.join(os.getcwd(), 'output', 'bench', iteration, filename), 'r') as bench_file:
+print("Benchmarks")
+with open(os.path.join(os.getcwd(), "bench.csv"), 'w') as bench_csv:
+    writer = csv.writer(bench_csv)
+    writer.writerow(['iteration', 'sets', 'ways', 'skews', 'replacement policy', 'skew approach', 'extra invalid tags', 'eviction policy', 'geometric mean', 'geometric sd', 'geometric range'])
+
+    for iteration in os.listdir(os.path.join(os.getcwd(), 'output', 'bench')):
+        if iteration[0] == '.':
+            continue # Handle hidden files
+
+        for filename in os.listdir(os.path.join(os.getcwd(), 'output', 'bench', iteration)):
+            if filename[0] == '.':
+                continue # Handle hidden files
+
             parsed = parse_filename(filename)
 
-#            with open(os.path.join(os.getcwd(), 'benchmarks.csv', 'w')) as bench_csv:
+            mean = 0
+            sd = 0
+            rnge = 0
 
+            print(str(os.path.join(os.getcwd(), 'output', 'bench', iteration, filename)))
+            with open(os.path.join(os.getcwd(), 'output', 'bench', iteration, filename), 'r', encoding='ascii') as file:
+                for line in file.readlines():
+                    if "Geometric mean" in line:
+                        mean = int(line.split(' ')[-1].replace(',', ''))
+                    elif "Geometric SD" in line:
+                        sd = float(line.split(' ')[-1])
+                    elif "Geometric range" in line:
+                        rnge = int(line.split(' ')[-1].replace(',', ''))
+            
+            writer.writerow([iteration] + parsed + [mean, sd, rnge])
+
+print("cost")
+
+with open(os.path.join(os.getcwd(), "cost.csv"), 'w') as cost_csv:
+    writer = csv.writer(cost_csv)
+    writer.writerow(['sets', 'ways', 'skews', 'replacement policy', 'skew approach', 'extra invalid tags', 'eviction policy', 'chip area'])
+
+    for filename in os.listdir(os.path.join(os.getcwd(), 'output', 'cost')):
+        if filename[0] == '.':
+            continue # Handle hidden files
+
+        parsed = parse_filename(filename) 
+        cost = 0.0
+
+        print(str(os.path.join(os.getcwd(), 'output', 'cost', filename)))
+        with open(os.path.join(os.getcwd(), 'output', 'cost', filename), 'r', encoding='ascii') as file:
+            for line in file.readlines():
+                if "Chip area" in line:
+                    cost = float(line.split(' ')[-1])
+
+        writer.writerow(parsed + [cost])

@@ -1,0 +1,4 @@
+iteration,sets,ways,skews,replacement policy,skew approach,extra invalid tags,eviction policy,geometric mean,geometric sd,geometric range
+0,4,2,1,PLRU,RS,0,LE,19820122,1.86,26316469
+0,16,2,1,PLRU,RS,0,LE,16650848,1.66,17660659
+0,16,2,1,RAN,RS,0,LE,18558546,1.71,20831296
