@@ -3820,3 +3820,49 @@ INFO: compiler crashed due to an error in the Scala compiler, retrying with new 
 2026.05.29 11:38:10 INFO  time: compiled core in 0.65s
 2026.05.29 11:40:14 INFO  compiling core (1 scala source)
 2026.05.29 11:40:17 INFO  time: compiled core in 2.28s
+2026.05.29 13:48:42 WARN  Could not find semantic tokens for: file:///Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+May 29, 2026 1:48:42 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 6569
+2026.05.29 13:48:42 INFO  compiling core (1 scala source)
+2026.05.29 13:48:44 INFO  time: compiled core in 2.45s
+2026.05.29 13:48:44 WARN  Could not load snapshot text for /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+2026.05.29 13:48:44 INFO  compiling core (1 scala source)
+2026.05.29 13:48:45 WARN  Could not load snapshot text for /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/plugins/Cache.scala
+2026.05.29 13:48:46 INFO  time: compiled core in 1.28s
+2026.05.29 13:49:09 INFO  compiling core (1 scala source)
+2026.05.29 13:49:09 INFO  time: compiled core in 0.9s
+2026.05.29 13:49:31 INFO  compiling core (1 scala source)
+2026.05.29 13:49:31 INFO  time: compiled core in 0.84s
+2026.05.29 13:51:17 INFO  compiling core (1 scala source)
+2026.05.29 13:51:19 WARN  one feature warning; re-run with -feature for details
+2026.05.29 13:51:19 INFO  time: compiled core in 1.77s
+2026.05.29 13:52:27 INFO  compiling core (1 scala source)
+2026.05.29 13:52:30 INFO  time: compiled core in 2.17s
+May 29, 2026 1:52:44 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 7297
+2026.05.29 13:52:52 INFO  compiling core (1 scala source)
+2026.05.29 13:52:53 INFO  time: compiled core in 1.08s
+2026.05.29 14:10:06 INFO  compiling core (1 scala source)
+2026.05.29 14:10:09 INFO  time: compiled core in 2.07s
+2026.05.29 14:10:11 INFO  compiling core (1 scala source)
+2026.05.29 14:10:12 INFO  time: compiled core in 1.06s
+2026.05.29 14:10:14 INFO  compiling core (1 scala source)
+2026.05.29 14:10:14 INFO  time: compiled core in 0.93s
+May 29, 2026 5:17:55 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 5:51:17 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 5:56:51 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 5:57:29 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 6:03:03 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 6:12:27 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 6:13:22 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 6:14:01 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+May 29, 2026 6:16:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace

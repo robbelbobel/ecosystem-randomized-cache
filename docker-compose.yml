@@ -20,4 +20,5 @@ services:
       - ./formal-verification:/ecosystem/formal-verification
       - ./attacks:/ecosystem/attacks
       - ./scripts:/ecosystem/scripts
+      - ./benchmarks:/ecosystem/benchmarks
     command: "/bin/bash"

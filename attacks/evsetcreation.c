@@ -21,15 +21,12 @@
 bool probe(char *target, char **eviction_set, int set_size) {
     volatile int sink;
 
-    // 1. Bring target into cache
     sink = *target;
 
-    // 2. Access candidates to evict target
     for (int i = 0; i < set_size; i++) {
         sink = *eviction_set[i];
     }
 
-    // 3. Time the reload — slow means target was evicted
     asm volatile ("fence rw, rw" ::: "memory");
     int t1 = rdcycle();
     asm volatile ("fence rw, rw" ::: "memory");
@@ -43,7 +40,7 @@ bool probe(char *target, char **eviction_set, int set_size) {
 
 int main() {
     char *target = malloc(sizeof(char));
-    uintptr_t target_set = (uintptr_t)target % SET_STRIDE;
+    uintptr_t target_set = ((uintptr_t)target % SET_STRIDE) / MEMBUS_WIDTH;
     char *buf    = malloc(BUF_SIZE + SET_STRIDE);
 
     char **candidates    = malloc(sizeof(char *) * CANDIDATE_SIZE);
@@ -52,9 +49,9 @@ int main() {
     int cand_count = 0;
 
     for (size_t i = 0; i < BUF_SIZE; i++) {
-        if ((uintptr_t)(buf + i) % SET_STRIDE == target_set) {
-            candidates[cand_count]   = buf + i;
-            eviction_set[cand_count] = buf + i;
+        if (((uintptr_t)(&buf[i]) % SET_STRIDE) / MEMBUS_WIDTH == target_set) {
+            candidates[cand_count]   = &buf[i];
+            eviction_set[cand_count] = &buf[i];
             cand_count++;
             i += SET_STRIDE - 1;
         }
