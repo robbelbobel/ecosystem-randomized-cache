@@ -142,7 +142,7 @@ try:
             os.chdir("/ecosystem")
             if j == 0:
                 try:
-                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}_{i.replacement_policy}_{i.skew_approach}_{i.invalid_tags}_{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
                         subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
                 except Exception as e:
                     print(f"Cost analysis error: {e}\n")
@@ -151,7 +151,7 @@ try:
             print(f"Starting benchmark {idx} iteration {j}")
             os.chdir("/ecosystem/benchmarks/embench")
             try:
-                with open(f"/ecosystem/scripts/output/bench/{j}/bench_{i.sets}_{i.ways}_{i.skews}{i.replacement_policy}{i.skew_approach}{i.invalid_tags}{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                with open(f"/ecosystem/scripts/output/bench/{j}/bench_{i.sets}_{i.ways}_{i.skews}_{i.replacement_policy}_{i.skew_approach}_{i.invalid_tags}_{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
                     subprocess.run(['python3',
                                     'benchmark_speed.py',
                                     '--target-module=run_proteus', 

@@ -1,0 +1,159 @@
+/ecosystem/benchmarks/embench/bd/src/aha-mont64/aha-mont64
+Clock cycles: 11825718
+RET=0
+
+
+cycles: 11825718.0
+11825718.0
+/ecosystem/benchmarks/embench/bd/src/crc32/crc32
+Clock cycles: 35474093
+RET=0
+
+
+cycles: 35474093.0
+35474093.0
+/ecosystem/benchmarks/embench/bd/src/depthconv/depthconv
+Clock cycles: 53248150
+RET=0
+
+
+cycles: 53248150.0
+53248150.0
+/ecosystem/benchmarks/embench/bd/src/edn/edn
+Clock cycles: 34138595
+RET=0
+
+
+cycles: 34138595.0
+34138595.0
+/ecosystem/benchmarks/embench/bd/src/huffbench/huffbench
+Clock cycles: 14838565
+RET=0
+
+
+cycles: 14838565.0
+14838565.0
+/ecosystem/benchmarks/embench/bd/src/matmult-int/matmult-int
+Clock cycles: 43546533
+RET=0
+
+
+cycles: 43546533.0
+43546533.0
+/ecosystem/benchmarks/embench/bd/src/md5sum/md5sum
+Clock cycles: 11474296
+RET=0
+
+
+cycles: 11474296.0
+11474296.0
+/ecosystem/benchmarks/embench/bd/src/nettle-aes/nettle-aes
+Clock cycles: 50543020
+RET=0
+
+
+cycles: 50543020.0
+50543020.0
+/ecosystem/benchmarks/embench/bd/src/nettle-sha256/nettle-sha256
+Clock cycles: 13950181
+RET=0
+
+
+cycles: 13950181.0
+13950181.0
+/ecosystem/benchmarks/embench/bd/src/nsichneu/nsichneu
+Clock cycles: 7271694
+RET=0
+
+
+cycles: 7271694.0
+7271694.0
+/ecosystem/benchmarks/embench/bd/src/picojpeg/picojpeg
+Clock cycles: 24406352
+RET=0
+
+
+cycles: 24406352.0
+24406352.0
+/ecosystem/benchmarks/embench/bd/src/qrduino/qrduino
+Clock cycles: 12565553
+RET=0
+
+
+cycles: 12565553.0
+12565553.0
+/ecosystem/benchmarks/embench/bd/src/sglib-combined/sglib-combined
+Clock cycles: 26545546
+RET=0
+
+
+cycles: 26545546.0
+26545546.0
+/ecosystem/benchmarks/embench/bd/src/slre/slre
+Clock cycles: 16509002
+RET=0
+
+
+cycles: 16509002.0
+16509002.0
+/ecosystem/benchmarks/embench/bd/src/statemate/statemate
+Clock cycles: 16317389
+RET=0
+
+
+cycles: 16317389.0
+16317389.0
+/ecosystem/benchmarks/embench/bd/src/tarfind/tarfind
+Clock cycles: 8622912
+RET=0
+
+
+cycles: 8622912.0
+8622912.0
+/ecosystem/benchmarks/embench/bd/src/ud/ud
+Clock cycles: 25406368
+RET=0
+
+
+cycles: 25406368.0
+25406368.0
+/ecosystem/benchmarks/embench/bd/src/wikisort/wikisort
+Clock cycles: 7950248
+RET=0
+
+
+cycles: 7950248.0
+7950248.0
+/ecosystem/benchmarks/embench/bd/src/xgboost/xgboost
+Clock cycles: 39880312
+RET=0
+
+
+cycles: 39880312.0
+39880312.0
+Benchmark           Speed
+---------           -----
+aha-mont64       11,825,718
+crc32            35,474,093
+depthconv        53,248,150
+edn              34,138,595
+huffbench        14,838,565
+matmult-int      43,546,533
+md5sum           11,474,296
+nettle-aes       50,543,020
+nettle-sha256    13,950,181
+nsichneu         7,271,694
+picojpeg         24,406,352
+qrduino          12,565,553
+sglib-combined   26,545,546
+slre             16,509,002
+statemate        16,317,389
+tarfind          8,622,912
+ud               25,406,368
+wikisort         7,950,248
+xgboost          39,880,312
+---------           -----
+Geometric mean   19,820,122
+Geometric SD            1.86
+Geometric range  26,316,469
+All benchmarks run successfully
