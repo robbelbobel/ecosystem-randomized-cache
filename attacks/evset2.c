@@ -3,13 +3,13 @@
 #include "performance.h"
 
 #define LINE_SIZE 16
-#define WAYS 4
-#define SETS 16
-#define SKEWS 2
+#define WAYS 2
+#define SETS 2
+#define SKEWS 1
 #define INITIAL_SIZE (LINE_SIZE * WAYS * SETS * SKEWS * 2)
 #define STRIDE (LINE_SIZE * SETS)
 
-#define THRESHOLD 35
+#define THRESHOLD 100
 
 bool probe_evicted(char* target, char** set) {
     volatile int sink;
