@@ -109,6 +109,7 @@ try:
     os.chdir("/ecosystem/benchmarks/embench")
     subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
     for j in range(0, 10):
+        os.makedirs(f'/ecosystem/scripts/output/bench/{j}', exist_ok=True)
         for idx, i in enumerate(configurations):
             # Modify Configuration
             print("Modifying Core.scala")

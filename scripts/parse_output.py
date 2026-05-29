@@ -35,28 +35,16 @@ print("Starting parse...")
 
 def parse_filename(filename: str) -> Configuration:
     ''' Parses a filename into a Configuration '''
-    pattern = (
-        r"bench_(\d+)_(\d+)_(\d+)"                 # sets, ways, skews
-        r"ReplacementPolicy\.(\w+)"                # replacement policy
-        r"SkewApproach\.(\w+)"                    # skew approach
-        r"(\d+)"                                  # invalid tags
-        r"EvictionPolicy\.(\w+)\.txt$"            # eviction policy
-    )
-
-    match = re.match(pattern, filename)
-    if not match:
-        raise ValueError(f"Filename does not match expected format: {filename}")
-
-    sets, ways, skews, rp, sa, invalid_tags, ep = match.groups()
+    spl = filename.split('_')
 
     return Configuration(
-        sets=int(sets),
-        ways=int(ways),
-        skews=int(skews),
-        replacement_policy=ReplacementPolicy(rp),
-        skew_approach=SkewApproach(sa),
-        invalid_tags=int(invalid_tags),
-        eviction_policy=EvictionPolicy(ep),
+        sets=int(spl[1]),
+        ways=int(spl[2]),
+        skews=int(spl[3]),
+        replacement_policy=ReplacementPolicy(spl[4]),
+        skew_approach=SkewApproach(spl[5]),
+        invalid_tags=int(spl[6]),
+        eviction_policy=EvictionPolicy(spl[7]),
     )
 
 # Bench
