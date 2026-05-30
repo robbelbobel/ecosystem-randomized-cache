@@ -6,9 +6,16 @@ from dataclasses import dataclass
 from enum import Enum
 
 ### DATA STRUCTURES ###
-class ReplacementPolicy(Enum):
+class EvictionPolicy(Enum):
+    """ Eviction Policy """
+    GRAN = "GRAN"
+    GLRU = "GLRU"
+    LRAN = "LRAN"
+    LLRU = "LLRU"
+
+class InsertionPolicy(Enum):
     """ Replacement Policy """
-    PLRU = "PLRU" # Pseudo-LRU
+    LRU = "LRU" # LRU
     RAN = "RAN" # Randomized
 
 class SkewApproach(Enum):
@@ -16,77 +23,52 @@ class SkewApproach(Enum):
     RS = "RS" # Random Selection
     LA = "LA" # Load Aware
 
-class EvictionPolicy(Enum):
-    """ Eviction Policy """
-    LE = "LE" # Local Eviction
-    GE = "GE" # Global Eviction
-
 @dataclass
 class Configuration:
     """ Represents a cache configuration """
     sets: int
     ways: int
     skews: int
-    replacement_policy: ReplacementPolicy
+    eviction_policy: EvictionPolicy
+    insertion_policy: InsertionPolicy
     skew_approach: SkewApproach
     invalid_tags: int
-    eviction_policy: EvictionPolicy
 
 ### CONFIGURATIONS ###
 configurations: list[Configuration] = [
-    # Base
-    Configuration(16, 2, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 1, ReplacementPolicy.RAN,  SkewApproach.RS, 0, EvictionPolicy.LE),
+    # Baseline
+    Configuration(16, 2, 1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
 
-    # Ways Sweep (baseline)
-    Configuration(16, 1,  1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 4,  1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 8,  1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 16, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 32, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
+    # Knob 1: Ways (skews=1, no other knobs)
+    Configuration(16, 1,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 4,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 8,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 16,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 32,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 64,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 128, 1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
 
-    # Sets Sweep (baseline)
-    Configuration(4,   2, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(64,  2, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(256, 2, 1, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
+    # Knob 2: Skews (ways=2, no other knobs)
+    Configuration(16, 2, 2,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 2, 4,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 2, 8,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 2, 16, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
 
-    # Skew Count (RS vs LA)
-    Configuration(16, 2, 2,  ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 4,  ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 8,  ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 16, ReplacementPolicy.PLRU, SkewApproach.RS, 0, EvictionPolicy.LE),
+    # Knob 3: Invalid tags (ways=2, skews=2, GLRU+LA as required by paper)
+    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 4),
+    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 8),
+    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 16),
+    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 32),
 
-    Configuration(16, 2, 2,  ReplacementPolicy.PLRU, SkewApproach.LA, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 4,  ReplacementPolicy.PLRU, SkewApproach.LA, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 8,  ReplacementPolicy.PLRU, SkewApproach.LA, 0, EvictionPolicy.LE),
-    Configuration(16, 2, 16, ReplacementPolicy.PLRU, SkewApproach.LA, 0, EvictionPolicy.LE),
+    # Knob 4: Replacement policy (ways=2, skews=2, everything else fixed)
+    Configuration(16, 2, 2, EvictionPolicy.LRAN, InsertionPolicy.RAN, SkewApproach.RS, 0),
 
-    # Invalid Tags (RS)
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 2,  EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 8,  EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 32, EvictionPolicy.LE),
-    Configuration(16, 2, 4, ReplacementPolicy.PLRU, SkewApproach.RS, 32, EvictionPolicy.LE),
-    Configuration(16, 2, 8, ReplacementPolicy.PLRU, SkewApproach.RS, 32, EvictionPolicy.LE),
+    # Knob 5: Eviction locality — LE vs GE (ways=2, skews=2)
+    Configuration(16, 2, 2, EvictionPolicy.GRAN, InsertionPolicy.LRU, SkewApproach.RS, 0),
+    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
 
-    # Invalid Tags (LA)
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.LA, 2,  EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.LA, 8,  EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.LA, 16, EvictionPolicy.LE),
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.LA, 32, EvictionPolicy.LE),
-
-    # Eviction Policy (LE vs GE) x Ways
-    Configuration(16, 2,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.LE),
-    Configuration(16, 4,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.LE),
-    Configuration(16, 8,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.LE),
-    Configuration(16, 16, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.LE),
-
-    Configuration(16, 2,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.GE),
-    Configuration(16, 4,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.GE),
-    Configuration(16, 8,  2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.GE),
-    Configuration(16, 16, 2, ReplacementPolicy.PLRU, SkewApproach.RS, 16, EvictionPolicy.GE),
-
-    Configuration(16, 2, 2, ReplacementPolicy.PLRU, SkewApproach.LA, 16, EvictionPolicy.GE),
+    # Knob 6: Skew selection — RS vs LA (ways=2, skews=2)
+    Configuration(16, 2, 2, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.LA, 0),
 ]
 
 ### LOGIC ###
@@ -122,10 +104,10 @@ try:
             lines[70] = f"ways = {i.ways},\n"
             lines[71] = f"skews = {i.skews},\n"
 
-            lines[73] = f"replacementPolicy = ReplacementPolicy.{i.replacement_policy.name},\n"
-            lines[74] = f"skewApproach = SkewApproach.{i.skew_approach.name},\n"
-            lines[75] = f"invalidTags = {i.invalid_tags},\n"
-            lines[76] = f"evictionPolicy = EvictionPolicy.{i.eviction_policy.name},\n"
+            lines[73] = f"evictionPolicy = EvictionPolicy.{i.eviction_policy.name},\n"
+            lines[74] = f"insertionPolicy = InsertionPolicy.{i.insertion_policy.name},\n"
+            lines[75] = f"skewApproach = SkewApproach.{i.skew_approach.name},\n"
+            lines[76] = f"invalidTags = {i.invalid_tags},\n"
 
             with open("Core.scala", 'w', encoding='UTF-8') as file:
                 file.writelines(lines)
@@ -143,7 +125,7 @@ try:
             os.chdir("/ecosystem")
             if j == 0:
                 try:
-                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}_{i.replacement_policy}_{i.skew_approach}_{i.invalid_tags}_{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                    with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}_{i.eviction_policy}_{i.insertion_policy}_{i.skew_approach}_{i.invalid_tags}.txt", 'w', encoding="UTF-8") as file:
                         subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
                 except Exception as e:
                     print(f"Cost analysis error: {e}\n")
@@ -152,7 +134,7 @@ try:
             print(f"Starting benchmark {idx} iteration {j}")
             os.chdir("/ecosystem/benchmarks/embench")
             try:
-                with open(f"/ecosystem/scripts/output/bench/{j}/bench_{i.sets}_{i.ways}_{i.skews}_{i.replacement_policy}_{i.skew_approach}_{i.invalid_tags}_{i.eviction_policy}.txt", 'w', encoding="UTF-8") as file:
+                with open(f"/ecosystem/scripts/output/bench/{j}/bench_{i.sets}_{i.ways}_{i.skews}_{i.eviction_policy}_{i.insertion_policy}_{i.skew_approach}_{i.invalid_tags}.txt", 'w', encoding="UTF-8") as file:
                     subprocess.run(['python3',
                                     'benchmark_speed.py',
                                     '--target-module=run_proteus', 

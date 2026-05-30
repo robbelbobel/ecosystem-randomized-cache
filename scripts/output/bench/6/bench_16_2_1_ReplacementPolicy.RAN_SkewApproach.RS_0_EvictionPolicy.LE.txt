@@ -1,0 +1,71 @@
+/ecosystem/benchmarks/embench/bd/src/aha-mont64/aha-mont64
+Clock cycles: 11628420
+RET=0
+
+
+cycles: 11628420.0
+11628420.0
+/ecosystem/benchmarks/embench/bd/src/crc32/crc32
+Clock cycles: 31232501
+RET=0
+
+
+cycles: 31232501.0
+31232501.0
+/ecosystem/benchmarks/embench/bd/src/depthconv/depthconv
+Clock cycles: 22356285
+RET=0
+
+
+cycles: 22356285.0
+22356285.0
+/ecosystem/benchmarks/embench/bd/src/edn/edn
+Clock cycles: 28894912
+RET=0
+
+
+cycles: 28894912.0
+28894912.0
+/ecosystem/benchmarks/embench/bd/src/huffbench/huffbench
+Clock cycles: 13438209
+RET=0
+
+
+cycles: 13438209.0
+13438209.0
+/ecosystem/benchmarks/embench/bd/src/matmult-int/matmult-int
+Clock cycles: 27107171
+RET=0
+
+
+cycles: 27107171.0
+27107171.0
+/ecosystem/benchmarks/embench/bd/src/md5sum/md5sum
+Clock cycles: 8423849
+RET=0
+
+
+cycles: 8423849.0
+8423849.0
+/ecosystem/benchmarks/embench/bd/src/nettle-aes/nettle-aes
+Clock cycles: 45879893
+RET=0
+
+
+cycles: 45879893.0
+45879893.0
+/ecosystem/benchmarks/embench/bd/src/nettle-sha256/nettle-sha256
+Clock cycles: 13077159
+RET=0
+
+
+cycles: 13077159.0
+13077159.0
+/ecosystem/benchmarks/embench/bd/src/nsichneu/nsichneu
+Clock cycles: 7196670
+RET=0
+
+
+cycles: 7196670.0
+7196670.0
+/ecosystem/benchmarks/embench/bd/src/picojpeg/picojpeg

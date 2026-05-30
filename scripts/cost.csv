@@ -1,4 +1,0 @@
-sets,ways,skews,replacement policy,skew approach,extra invalid tags,eviction policy,chip area
-16,2,1,RAN,RS,0,LE,196855.162
-16,2,1,PLRU,RS,0,LE,182530.264
-4,2,1,PLRU,RS,0,LE,149242.492

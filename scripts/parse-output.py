@@ -22,7 +22,7 @@ def parse_filename(filename: str) -> list[str]:
 print("Benchmarks")
 with open(os.path.join(os.getcwd(), "bench.csv"), 'w') as bench_csv:
     writer = csv.writer(bench_csv)
-    writer.writerow(['iteration', 'sets', 'ways', 'skews', 'replacement policy', 'skew approach', 'extra invalid tags', 'eviction policy', 'geometric mean', 'geometric sd', 'geometric range'])
+    writer.writerow(['iteration', 'sets', 'ways', 'skews', 'eviction policy', 'insertion policy', 'skew approach', 'extra invalid tags', 'geometric mean', 'geometric sd', 'geometric range'])
 
     for iteration in os.listdir(os.path.join(os.getcwd(), 'output', 'bench')):
         if iteration[0] == '.':
@@ -55,7 +55,7 @@ print("cost")
 
 with open(os.path.join(os.getcwd(), "cost.csv"), 'w') as cost_csv:
     writer = csv.writer(cost_csv)
-    writer.writerow(['sets', 'ways', 'skews', 'replacement policy', 'skew approach', 'extra invalid tags', 'eviction policy', 'chip area'])
+    writer.writerow(['sets', 'ways', 'skews', 'eviction policy', 'insertion policy', 'skew approach', 'extra invalid tags', 'chip area'])
 
     for filename in os.listdir(os.path.join(os.getcwd(), 'output', 'cost')):
         if filename[0] == '.':
