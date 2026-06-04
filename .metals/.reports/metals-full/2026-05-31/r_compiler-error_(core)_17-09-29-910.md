@@ -1,13 +1,13 @@
-error id: E309BEFA825A0621B802CFEEFE7F8F79
+error id: 9D4084B0F79F6788F29BFF402E1DB2E5
 file://<WORKSPACE>/core/src/main/scala/riscv/plugins/Cache.scala
-### java.lang.StringIndexOutOfBoundsException: Range [5063, 5063 + -9) out of bounds for length 25531
+### java.lang.StringIndexOutOfBoundsException: Range [8431, 8431 + -23) out of bounds for length 29290
 
 occurred in the presentation compiler.
 
 
 
 action parameters:
-offset: 5063
+offset: 8408
 uri: file://<WORKSPACE>/core/src/main/scala/riscv/plugins/Cache.scala
 text:
 ```scala
@@ -20,16 +20,17 @@ import riscv.BaseIsa.RV32E.xlen
 import scala.util.Random
 import spinal.core.sim.SimDataPimper
 
-object ReplacementPolicy extends SpinalEnum {
-  val RPLRU, RAN = newElement() // Pseudo-LRU, Random
+object EvictionPolicy extends SpinalEnum {
+  val GRAN, GLRU, LRAN, LLRU =
+    newElement() // Global Random, Global Least Recently Used, Local Random, Local Least Recently Used
+}
+
+object InsertionPolicy extends SpinalEnum {
+  val RAN, LRU = newElement() // Random, Least Recently Used
 }
 
 object SkewApproach extends SpinalEnum {
   val RS, LA = newElement() // Random Selection, Load Aware
-}
-
-object EvictionPolicy extends SpinalEnum {
-  val LE, GE = newElement() // Local Eviction, Global Eviction
 }
 
 class Cache(
@@ -40,12 +41,10 @@ class Cache(
     prefetcher: Option[PrefetchService] = None,
     maxPrefetches: Int = 1,
     cacheable: (UInt => Bool) = (_ => True),
-    randomizedSetIndexing: Bool =
-      True, // TODO: Enforce this better: Disable all features related to randomized caching
-    replacementPolicy: ReplacementPolicy.E = ReplacementPolicy.RPLRU,
+    evictionPolicy: EvictionPolicy.E = EvictionPolicy.GLRU,
+    insertionPolicy: InsertionPolicy.E = InsertionPolicy.LRU,
     skewApproach: SkewApproach.E = SkewApproach.LA,
     invalidTags: Int = 0, // Invalid Tags
-    evictionPolicy: EvictionPolicy.E = EvictionPolicy.GE,
     delay: Int = 1
 )(implicit config: Config)
     extends Plugin[Pipeline] {
@@ -53,28 +52,20 @@ class Cache(
   assert(skews >= 1, "Cache must exist out of 1 or more skews")
   assert(
     invalidTags < sets * ways * skews,
-    "Invalidtags cannot be larger than the total amount of ways in the cache."
+    "InvalidTags cannot be larger than the total amount of ways in the cache."
   )
 
   private val byteIndexBits = log2Up(config.xlen / 8)
   private val wordIndexBits = log2Up(config.memBusWidth / config.xlen)
-  private val setIndexBits = log2Up(sets)
+  private val setBits = log2Up(sets)
 
-  // Set Index Bits Must Be Divisible By 2 (Needed for Feistel Algorithm)
-  assert(sets > 0 && setIndexBits % 2 == 0, "Set index bits must be divisable by 2")
-
-  // Initialize Key (4 Stages like CAESER)
-  private val feistelStages = 4
-  private val key = Vec.fill(feistelStages)(Reg(UInt(setIndexBits / 2 bits)))
-
-  for (i <- 0 until feistelStages) {
-    key(i) := scala.util.Random.nextInt(setIndexBits / 2)
-  }
+  // Tag bits (Needed for Feistel Algorithm)
+  assert((config.xlen - byteIndexBits - wordIndexBits) % 2 == 0, "Tag bits must be divisable by 2")
 
   private case class CacheEntry() extends Bundle {
-    val tag: UInt = UInt(config.xlen - (byteIndexBits + wordIndexBits + setIndexBits) bits)
+    val tag: UInt = UInt(config.xlen - (byteIndexBits + wordIndexBits) bits)
     val value: UInt = UInt(config.memBusWidth bits)
-    val age: UInt = UInt(log2Up(sets * skews * ways) bits)
+    val age: UInt = UInt(log2Up(skews * sets * ways) bits)
     val valid: Bool = Bool()
   }
 
@@ -86,57 +77,60 @@ class Cache(
 
   class SkewUsage() extends Bundle {
     val skew: UInt = UInt(log2Up(skews) bits)
-    val usage: UInt = UInt(log2Up(ways) bits)
+    val usage: UInt = UInt(log2Up(ways + 1) bits)
   }
 
-  private def getSetIndex(address: UInt): UInt = {
-    if (randomizedSetIndexing == True && (setIndexBits % 2) == 0) {
-      val half = setIndexBits / 2
+  private val feistelStages = 4
 
-      // 4-Stage Feistel-Network
-      var L = address(byteIndexBits + wordIndexBits, half bits)
-      var R = address(byteIndexBits + wordIndexBits + half, half bits)
+  private def getSetIndex(address: UInt, key: Vec[UInt]): UInt = {
+    val half = (config.xlen - byteIndexBits - wordIndexBits) / 2
 
-      for (i <- 0 until feistelStages) {
-        var temp = R ^ key(i)
-        R = L
-        L = temp
-      }
+    // 4-Stage Feistel-Network
+    var L = address(byteIndexBits + wordIndexBits, half bits)
+    var R = address(byteIndexBits + wordIndexBits + half, half bits)
 
-      (L ## R).asUInt
-    } else {
-      // Default to Standard Set-Associative Indexing
-      address(byteIndexBits + wordIndexBits, setIndexBits bits)
+    for (i <- 0 until feistelStages) {
+      val F = R ^ key(i)
+      var temp = L ^ F
+      L = R
+      R = temp
     }
+
+    (L ## R).asUInt(setBits - 1 downto 0)
   }
 
   private def getTagBits(address: UInt): UInt = {
-    address(byteIndexBits + wordIndexBits + setIndexBits until config.xlen)
+    address(byteIndexBits + wordIndexBits until config.xlen)
   }
 
   // get all address bits that determine whether two addresses fall into the same cache line
-  private def getSignificantBits(address: UInt): UInt = {
-    U(getTagBits(address) ## getSetIndex(address))
+  private def getSignificantBits(address: UInt, key: Vec[UInt]): UInt = {
+    U(getTagBits(address) ## getSetIndex(address, key))
   }
 
   private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
     val cacheArea = pipeline plug new Area {
+      // Initialize Key (4 Stages like CAESER)
+      private val key =
+        Vec.fill(feistelStages)(Reg(UInt((config.xlen - byteIndexBits - wordIndexBits) / 2 bits)))
+
+      for (i <- 0 until feistelStages) {
+        key(i) := scala.util.Random.nextInt(
+          1 << ((config.xlen - byteIndexBits - wordIndexBits) / 2)
+        )
+      }
+
       private val totalWays: Int = ways * skews * sets
 
       private val idWidth = internal.config.idWidth
       private val maxId = UInt(idWidth bits).maxValue.intValue()
 
       private val cache =
-        Vec.fill(sets)(Vec.fill(skews)(Vec.fill(ways)(RegInit(CacheEntry().getZero))))
+        Vec.fill(skews)(Vec.fill(sets)(Vec.fill(ways)(RegInit(CacheEntry().getZero))))
 
       private val cacheHits = RegInit(UInt(config.xlen bits).getZero)
       private val cacheMisses = RegInit(UInt(config.xlen bits).getZero)
       private val forwardedLoads = RegInit(UInt(config.xlen bits).getZero)
-      private val validTags =
-        RegInit(
-          UInt(config.xlen bits).getZero
-        ) // Tracks the amount of valid tags currently in this cache
-
       private val externalId = RegInit(UInt(external.config.idWidth bits).getZero)
 
       private val storeInCycle = Bool()
@@ -149,23 +143,55 @@ class Cache(
       decrementOutstandingPrefetches := False
 
       // RNG
-      private val rngState = RegInit(U(BigInt(config.xlen * 2, scala.util.Random), config.xlen * 2 bits))
+      private val rngState =
+        RegInit(U(BigInt(config.xlen * 2, scala.util.Random), config.xlen * 2 bits))
       private val rngMutliplier = BigInt(config.xlen * 2, scala.util.Random)
       private val rngIncrement = BigInt(config.xlen * 2, scala.util.Random) | 1 // odd!
-      private val pcg = RegInit()@@
 
-      private def rotr32(x : UInt, r : UInt) : UInt =
-      {
-        x >> r | (x << (config.xlen - r)).resize(config.xlen)
+      private def rotr32(x: UInt, r: UInt): UInt = {
+        (x >> r).resize(config.xlen bits) | (x << (config.xlen - r)).resize(config.xlen bits)
       }
 
-      private def pcg32() : UInt = {
+      private def pcg32(): UInt = {
         val count = rngState >> 59 // 64 - 59 = 5 -> 5 bit rotation (32 bit possible rotations)
 
-        val x = rngState ^ (rngState >> 18)
-        rngState := rngState * rngMutliplier + rngIncrement
+        val x = rngState ^ (rngState >> 18).resize(config.xlen * 2 bits) // 18 = (64 - 27)/2
+        rngState := (rngState * rngMutliplier + rngIncrement).resize(config.xlen * 2 bits)
 
-        rotr32(x, count)
+        rotr32((x >> 27).resize(config.xlen bits), count)
+      }
+
+      private var rngOutput = pcg32();
+
+      // Valid Tag Counter
+      private val tagEvicted = Bool() // Through Eviction
+      private val tagInvalidated = Bool() // Through e.g. write
+      private val tagInserted = Bool() // Newly Inserted Tags (former invalid tags)
+      private val validTags = RegInit(UInt(log2Up(sets * skews * ways + 1) bits).getZero)
+
+      tagEvicted := False
+      tagInvalidated := False
+      tagInserted := False
+      validTags := validTags - tagEvicted.asUInt.resized - tagInvalidated.asUInt.resized + tagInserted.asUInt.resized
+
+      private val lastInsertionSkew = RegInit(UInt(log2Up(skews) bits).getZero)
+      private val lastInsertionSet = RegInit(UInt(log2Up(sets) bits).getZero)
+
+      if (invalidTags > 0) {
+        when(validTags > totalWays - invalidTags) {
+          if (evictionPolicy == EvictionPolicy.GLRU) {
+            evictWayGLRU();
+          }
+          if (evictionPolicy == EvictionPolicy.GRAN) {
+            evictWayGRAN();
+          }
+          if (evictionPolicy == EvictionPolicy.LLRU) {
+            evictWayLLRU();
+          }
+          if (evictionPolicy == EvictionPolicy.LRAN) {
+            evictWayLRAN();
+          }
+        }
       }
 
       // this logic is to avoid problems when incrementing and decrementing in the same cycle
@@ -177,35 +203,11 @@ class Cache(
 
       private def getSkewUsage(set: UInt, skew: UInt): UInt = {
         // Count valid ways in provided skew
-        val result = Reg(UInt(log2Up(ways) bits))
-        result := 0
-        for (i <- 0 until ways) {
-          when(cache(set)(skew)(i).valid) {
-            result := result + 1
-          }
+        val counts = (0 until ways).map { i =>
+          cache(skew)(set)(i).valid.asUInt.resized
         }
 
-        result
-      }
-
-      private def getCacheUsage(): UInt = {
-        val max = sets * skews * ways
-        val width = log2Up(max + 1)
-
-        val acc = Reg(UInt(width bits)).init(0)
-
-        acc := 0
-        for (i <- 0 until sets) {
-          for (j <- 0 until skews) {
-            for (k <- 0 until ways) {
-              when(cache(i)(j)(k).valid) {
-                acc := acc + 1
-              }
-            }
-          }
-        }
-
-        acc
+        counts.reduceBalancedTree((_ + _)).resize(log2Up(ways + 1) bits)
       }
 
       private def getSkew(set: UInt): UInt = {
@@ -213,9 +215,7 @@ class Cache(
 
         if (skewApproach == SkewApproach.RS) {
           // Random Selection
-          val rngValue = pcg32()
-
-          (rngValue % skews).resize(log2Up(skews) bits)
+          (rngOutput % skews).resize(log2Up(skews) bits)
         } else {
           // Load Aware
           // Calculate usage of skews
@@ -227,21 +227,28 @@ class Cache(
           }
 
           // Find skew with lowest usage
-          val best = usage.reduceBalancedTree((a, b) => Mux(a.usage < b.usage, a, b))
+          val best = usage.reduceBalancedTree((a, b) =>
+            Mux(a.usage === b.usage, (Mux(rngOutput(0), a, b)), Mux(a.usage < b.usage, a, b))
+          )
 
           best.skew
         }
       }
 
-      private def oldestWay(set: UInt): WayResult = {
-        val result = Reg(WayResult())
-        result.set := set
+      private def oldestWayGlobal(invalidAllowed: Bool): WayResult = {
+        val result = WayResult()
+        result.skew := 0
+        result.set := 0
+        result.way := 0
 
-        for (i <- 0 until skews) {
-          for (j <- 0 until ways) {
-            when(cache(set)(i)(j).age === ways - 1 || !cache(set)(i)(j).valid) {
-              result.skew := i
-              result.way := j
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).age === ((skews * sets * ways) - 1) || (@@!cache(k)(j)(i).valid) {
+                result.skew := k
+                result.set := j
+                result.way := i
+              }
             }
           }
         }
@@ -249,63 +256,130 @@ class Cache(
         result
       }
 
-      private def increaseAgesUpTo(set: UInt, oldest: UInt): Unit = {
-        for (j <- 0 until skews) {
+      private def oldestWayLocal(skew: UInt, set: UInt, invalidAllowed: Bool): WayResult = {
+        val result = WayResult()
+        result.skew := skew
+        result.set := set
+        result.way := 0
+
+        when(invalidAllowed && !(0 until ways).map(i => cache(skew)(set)(i).valid).reduce(_ && _)) {
+          // Find Free Way
           for (i <- 0 until ways) {
-            when(cache(set)(j)(i).age < oldest) {
-              cache(set)(j)(i).age := cache(set)(j)(i).age + 1
+            when(!cache(skew)(set)(i).valid) {
+              result.way := i
+            }
+          }
+        } otherwise {
+          // Find Oldest Way
+          result.way := (0 until ways)
+            .map(i => U(i, log2Up(ways) bits))
+            .reduceBalancedTree((a, b) =>
+              Mux(cache(skew)(set)(a).age > cache(skew)(set)(b).age, a, b)
+            )
+        }
+
+        result
+      }
+
+      /** Global Eviction * */
+      private def increaseAgesUpTo(oldest: UInt): Unit = {
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).age < oldest) {
+                cache(k)(j)(i).age := (cache(k)(j)(i).age + 1).resized
+              }
             }
           }
         }
       }
 
-      private def decreaseAgesUntil(set: UInt, youngest: UInt): Unit = {
-        for (j <- 0 until skews) {
-          for (i <- 0 until ways) {
-            when(cache(set)(j)(i).age > youngest) {
-              cache(set)(j)(i).age := cache(set)(j)(i).age - 1
+      private def decreaseAgesUntil(youngest: UInt): Unit = {
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).age > youngest) {
+                cache(k)(j)(i).age := (cache(k)(j)(i).age - 1).resized
+              }
             }
           }
         }
       }
 
-      private def evictWayGlobal(): WayResult = {
+      /** GLOBAL EVICTION * */
+      private def evictWayGRAN(): WayResult = {
         // Evicts a Way Globally -> Choose Randomly
         val result = WayResult()
 
-        val rngValue = pcg32()
-
-        result.way := rngValue(log2Up(ways) - 1 downto 0).resized
-        result.skew := rngValue(log2Up(ways) + log2Up(skews) - 1 downto log2Up(ways)).resized
-        result.set := rngValue(
+        result.way := rngOutput(log2Up(ways) - 1 downto 0).resized
+        result.skew := rngOutput(log2Up(ways) + log2Up(skews) - 1 downto log2Up(ways)).resized
+        result.set := rngOutput(
           log2Up(sets) + log2Up(ways) + log2Up(skews) - 1 downto log2Up(ways) + log2Up(skews)
         ).resized
+
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+        }
+
+        decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+
+        cache(result.skew)(result.set)(result.way).valid := False
 
         result
       }
 
-      private def evictWayLocal(setIndex: UInt): WayResult = {
-        // Evicts a Way for a Given Set and Skew
-        if (replacementPolicy == ReplacementPolicy.RPLRU) {
-          // Least Recently Used Approach
-          val wayResult = oldestWay(setIndex)
-          cache(setIndex)(wayResult.skew)(wayResult.way).valid := False
-          increaseAgesUpTo(setIndex, ways * skews - 1)
+      private def evictWayGLRU(): WayResult = {
+        // Evicts a Way Globally with LRU
+        val result = oldestWayGlobal()
 
-          return wayResult
-        } else {
-          // Random Approach
-          val rngValue = pcg32()
-
-          val wayResult = WayResult()
-
-          wayResult.set := setIndex
-          wayResult.way := rngValue(log2Up(ways) downto 0).resized
-          wayResult.skew := rngValue(rngValue.high downto rngValue.high - log2Up(skews)).resized
-          cache(setIndex)(wayResult.skew)(wayResult.way).valid := False
-
-          return wayResult
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
         }
+
+        decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      /** LOCAL EVICTION * */
+      private def evictWayLRAN(): WayResult = {
+        // Randomly Evict Way Locally
+        val result = WayResult()
+
+        result.way := rngOutput(log2Up(ways) - 1 downto 0).resized
+        result.skew := lastInsertionSkew
+        result.set := lastInsertionSet
+
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+        }
+
+        decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      private def evictWayLLRU(): WayResult = {
+        // Evicts a Way Globally with LRU
+        val result = oldestWayLocal(lastInsertionSkew, lastInsertionSet)
+
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+        }
+
+        decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
       }
 
       private val sendingImmediateCmd = Bool()
@@ -360,9 +434,17 @@ class Cache(
       }
 
       private def insertRspInCache(address: UInt): Unit = {
-        val setIndex = getSetIndex(address)
-        val tag = getTagBits(address)
-        val skew = if (skews >= 2) getSkew(setIndex) else U(0, log2Up(skews) bits)
+        val hit = wayForAddress(address)
+
+        when(hit.valid && cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).valid) {
+          // Rsp already stored in cache -> Decrease Age Only
+          increaseAgesUpTo(
+            cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).age
+          )
+
+          cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).age := U(0).resized
+          cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).value := external.rsp.rdata
+        }
 
         outstandingLoads(external.rsp.id).pending := False
         outstandingLoads(external.rsp.id).storeInvalidated := False
@@ -372,54 +454,76 @@ class Cache(
           !outstandingLoads(external.rsp.id).storeInvalidated &&
             cacheable(address) &&
             !(storeInCycle &&
-              getSignificantBits(address) === getSignificantBits(internal.cmd.address))
+              getSignificantBits(address, key) === getSignificantBits(internal.cmd.address, key)) &&
+            !hit.valid
         ) {
-          var stored = False
-          var evict = False
-          for (i <- 0 until ways) {
-            when(cache(setIndex)(skew)(i).valid === False) {
-              // Free Entry Found -> Insert Here
-              cache(setIndex)(skew)(i).valid := True
-              cache(setIndex)(skew)(i).tag := tag
-              cache(setIndex)(skew)(i).value := external.rsp.rdata
-              cache(setIndex)(skew)(i).age := U(0).resized
-              stored = True
+          val setIndex = getSetIndex(address, key)
+          val tag = getTagBits(address)
+          val skew = if (skews >= 2) getSkew(setIndex) else U(0, log2Up(skews) bits)
 
-              validTags := validTags + 1 // May Trigger an Eviction
-              if (replacementPolicy == ReplacementPolicy.RPLRU) {
-                increaseAgesUpTo(
-                  setIndex,
-                  ways * skews - 1
-                ) // Increase Ages when PLRU is used
-              }
+          val found = Bool()
+          found := False
+
+          val freeidx = UInt(log2Up(ways) bits)
+          freeidx := 0
+
+          for (i <- 0 until ways) {
+            when(!cache(skew)(setIndex)(i).valid) {
+              freeidx := i
+              found := True
             }
           }
 
-          when(stored === False) {
-            // No Free Ways -> Evict Way and use evicted entry
-            val wayResult = evictWayLocal(setIndex)
-            increaseAgesUpTo(setIndex, cache(setIndex)(wayResult.skew)(wayResult.way).age)
+          when(found) {
+            increaseAgesUpTo((skews * sets * ways) - 1)
 
-            cache(setIndex)(wayResult.skew)(wayResult.way).valid := True
-            cache(setIndex)(wayResult.skew)(wayResult.way).tag := tag
-            cache(setIndex)(wayResult.skew)(wayResult.way).value := external.rsp.rdata
-            cache(setIndex)(wayResult.skew)(wayResult.way).age := U(0).resized
+            // Free Entry Found -> Insert Here
+            cache(skew)(setIndex)(freeidx).valid := True
+            cache(skew)(setIndex)(freeidx).tag := tag
+            cache(skew)(setIndex)(freeidx).value := external.rsp.rdata
+            cache(skew)(setIndex)(freeidx).age := U(0).resized
+
+            // Updated TagInserted
+            tagInserted := True
+
+            if (invalidTags > 0) {
+              lastInsertionSet := setIndex
+              lastInsertionSkew := skew
+            }
           }
 
-          if (invalidTags != 0) {
-            // Logic only required when invalid tags in use
-            when(getCacheUsage() + invalidTags > totalWays) {
-              // Valid Tag count has been exceeded
-              if (evictionPolicy == EvictionPolicy.LE) {
-                // Local Eviction
-                evictWayLocal(setIndex)
-              } else {
-                // Global Eviction
-                evictWayGlobal()
-              }
+          when(!found) {
+            // No Free Ways -> Use Replacement Policy
+            if (insertionPolicy == InsertionPolicy.LRU) {
+              // Least Recently Used Approach
+              val wayResult = oldestWayLocal(skew, setIndex)
+
+              increaseAgesUpTo(cache(wayResult.skew)(setIndex)(wayResult.way).age)
+
+              cache(wayResult.skew)(setIndex)(wayResult.way).valid := True
+              cache(wayResult.skew)(setIndex)(wayResult.way).tag := tag
+              cache(wayResult.skew)(setIndex)(wayResult.way).value := external.rsp.rdata
+              cache(wayResult.skew)(setIndex)(wayResult.way).age := U(0).resized
+            } else {
+              // Random Approach
+              val wayResult = WayResult()
+
+              wayResult.set := setIndex
+              wayResult.way := rngOutput(
+                log2Up(ways) downto 0
+              ).resized // Prevent assignment overlap
+              wayResult.skew := skew
+
+              increaseAgesUpTo(cache(wayResult.skew)(setIndex)(wayResult.way).age)
+
+              cache(wayResult.skew)(setIndex)(wayResult.way).valid := True
+              cache(wayResult.skew)(setIndex)(wayResult.way).tag := tag
+              cache(wayResult.skew)(setIndex)(wayResult.way).value := external.rsp.rdata
+              cache(wayResult.skew)(setIndex)(wayResult.way).age := U(0).resized
             }
           }
         }
+
         external.rsp.ready := True
       }
 
@@ -536,15 +640,15 @@ class Cache(
       }
 
       private def wayForAddress(address: UInt): Flow[WayResult] = {
-        val set = cache(getSetIndex(address))
+        val setIndex = getSetIndex(address, key)
         val tag = getTagBits(address)
         val result = Flow(WayResult())
         result.setIdle()
         for (j <- 0 until skews) {
           for (i <- 0 until ways) {
-            when(set(j)(i).valid && set(j)(i).tag === tag) {
+            when(cache(j)(setIndex)(i).valid && cache(j)(setIndex)(i).tag === tag) {
               val wayResult = WayResult()
-              wayResult.set := getSetIndex(address)
+              wayResult.set := getSetIndex(address, key)
               wayResult.skew := j
               wayResult.way := i
               result.push(wayResult)
@@ -567,7 +671,7 @@ class Cache(
 
             when(cacheable(prefetchAddress)) {
               val targetWay = wayForAddress(prefetchAddress)
-              val setIndex = getSetIndex(prefetchAddress)
+              val setIndex = getSetIndex(prefetchAddress, key)
               val tagBits = getTagBits(prefetchAddress)
 
               val alreadyPending = False
@@ -576,7 +680,7 @@ class Cache(
               for (i <- 0 until outstandingLoads.length) {
                 val load = outstandingLoads(i)
                 when(
-                  getSignificantBits(load.address) === U(
+                  getSignificantBits(load.address, key) === U(
                     tagBits ## setIndex
                   ) && load.pending && !load.storeInvalidated
                 ) {
@@ -615,32 +719,36 @@ class Cache(
         }
 
         val targetWay = wayForAddress(address) // Flow[WayResult]
-        val setIndex = getSetIndex(address)
-        val cacheSet = cache(setIndex)
+        val setIndex = getSetIndex(address, key)
+        val cacheSet = cache(targetWay.skew)(setIndex)
         val tagBits = getTagBits(address)
 
         when(targetWay.valid) {
-          cacheSet(targetWay.payload.skew)(targetWay.payload.way).age := U(0).resized
           increaseAgesUpTo(
-            setIndex,
-            cacheSet(targetWay.payload.skew)(targetWay.payload.way).age
+            cacheSet(targetWay.payload.way).age
           )
 
-          returnFromCache(cacheSet(targetWay.payload.skew)(targetWay.payload.way))
+          cacheSet(targetWay.payload.way).age := U(0).resized
+
+          returnFromCache(cacheSet(targetWay.payload.way))
         } otherwise {
           val alreadyPending = False
           for (i <- 0 until outstandingLoads.length) {
             val load = outstandingLoads(i)
             when(
-              getSignificantBits(load.address) === U(
+              getSignificantBits(load.address, key) === U(
                 tagBits ## setIndex
               ) && load.pending && !load.storeInvalidated
             ) {
               alreadyPending := True
               // if the load is already pending but result not yet received: mark it to be forwarded + increase cache misses
               when(
-                !(external.rsp.valid && getSignificantBits(load.address) === getSignificantBits(
-                  outstandingLoads(external.rsp.id).address
+                !(external.rsp.valid && getSignificantBits(
+                  load.address,
+                  key
+                ) === getSignificantBits(
+                  outstandingLoads(external.rsp.id).address,
+                  key
                 ))
               ) {
                 load.internalIds(internal.cmd.id) := True
@@ -667,7 +775,7 @@ class Cache(
 
       // handling a load/write request from the CPU
       when(internal.cmd.valid) {
-        val indexBits = getSetIndex(internal.cmd.address)
+        val indexBits = getSetIndex(internal.cmd.address, key)
         val tagBits = getTagBits(internal.cmd.address)
 
         if (internal.config.readWrite) {
@@ -676,24 +784,29 @@ class Cache(
             // write command: invalidates line and forwards to external bus
             for (j <- 0 until skews) {
               for (i <- 0 until ways) {
-                when(cache(indexBits)(j)(i).tag === tagBits) {
-                  when(cache(indexBits)(j)(i).valid === True) {
+                when(cache(j)(indexBits)(i).tag === tagBits) {
+                  when(cache(j)(indexBits)(i).valid === True) {
                     // Invalidate Line
-                    validTags := validTags - 1 // Decrease Valid Tag Counter
-                    cache(indexBits)(j)(i).valid := False
+                    cache(j)(indexBits)(i).valid := False
+                    // Update Tag Invalidated
+                    tagInvalidated := True
                   }
 
                   // Maximize Age of Line
-                  decreaseAgesUntil(indexBits, cache(indexBits)(j)(i).age)
-                  cache(indexBits)(j)(i).age := U(ways - 1, log2Up(sets * skews * ways) bits)
+                  decreaseAgesUntil(cache(j)(indexBits)(i).age)
+                  cache(j)(indexBits)(i).age := U(
+                    (skews * sets * ways) - 1,
+                    log2Up(skews * sets * ways) bits
+                  )
                 }
               }
             }
 
             for (i <- 0 until outstandingLoads.length) {
               when(
-                getSignificantBits(outstandingLoads(i).address) === getSignificantBits(
-                  internal.cmd.address
+                getSignificantBits(outstandingLoads(i).address, key) === getSignificantBits(
+                  internal.cmd.address,
+                  key
                 ) && outstandingLoads(i).pending
               ) {
                 outstandingLoads(i).storeInvalidated := True
@@ -725,7 +838,7 @@ class Cache(
 presentation compiler configuration:
 Scala version: 2.12.18
 Classpath:
-<WORKSPACE>/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-6AJ9Rn88QKuxL7SMty47Ig== [exists ], <HOME>/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar [exists ]
+<WORKSPACE>/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-vCAIS3CDQtOYHaYOuh03Pw== [exists ], <HOME>/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar [exists ]
 Options:
 -Yrangepos -Xplugin-require:semanticdb
 
@@ -753,6 +866,18 @@ java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:55)
 	scala.meta.internal.pc.SignatureHelpProvider$MethodCall$.unapply(SignatureHelpProvider.scala:255)
 	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.visit(SignatureHelpProvider.scala:366)
 	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.traverse(SignatureHelpProvider.scala:360)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.$anonfun$visit$5(SignatureHelpProvider.scala:418)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.$anonfun$visit$5$adapted(SignatureHelpProvider.scala:373)
+	scala.collection.TraversableLike$WithFilter.$anonfun$foreach$1(TraversableLike.scala:985)
+	scala.collection.immutable.List.foreach(List.scala:431)
+	scala.collection.TraversableLike$WithFilter.foreach(TraversableLike.scala:984)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.$anonfun$visit$3(SignatureHelpProvider.scala:373)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.$anonfun$visit$3$adapted(SignatureHelpProvider.scala:372)
+	scala.collection.TraversableLike$WithFilter.$anonfun$foreach$1(TraversableLike.scala:985)
+	scala.collection.immutable.List.foreach(List.scala:431)
+	scala.collection.TraversableLike$WithFilter.foreach(TraversableLike.scala:984)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.visit(SignatureHelpProvider.scala:372)
+	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.traverse(SignatureHelpProvider.scala:360)
 	scala.meta.internal.pc.SignatureHelpProvider$MethodCallTraverser.fromTree(SignatureHelpProvider.scala:329)
 	scala.meta.internal.pc.SignatureHelpProvider.$anonfun$signatureHelp$3(SignatureHelpProvider.scala:33)
 	scala.Option.flatMap(Option.scala:271)
@@ -770,4 +895,4 @@ java.base/jdk.internal.util.Preconditions$1.apply(Preconditions.java:55)
 ```
 #### Short summary: 
 
-java.lang.StringIndexOutOfBoundsException: Range [5063, 5063 + -9) out of bounds for length 25531
+java.lang.StringIndexOutOfBoundsException: Range [8431, 8431 + -23) out of bounds for length 29290

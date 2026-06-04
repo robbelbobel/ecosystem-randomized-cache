@@ -6436,3 +6436,30 @@ INFO: Unsupported notification method: $/setTrace
 2026.05.30 17:41:32 INFO  shutting down Metals
 2026.05.30 17:41:32 INFO  Shut down connection with build server.
 2026.05.30 17:41:32 INFO  Exiting server
+2026.06.04 14:11:07 INFO  Started: Metals version 1.6.7 in folders '/Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache' for client Visual Studio Code 1.122.1.
+2026.06.04 14:11:07 INFO  Memory monitor started
+2026.06.04 14:11:07 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.06.04 14:11:07 INFO  no build target found for /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/Core.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.04 14:11:08 INFO  no build target found for /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/core/src/main/scala/riscv/Core.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.04 14:11:08 INFO  Attempting to connect to the build server...
+2026.06.04 14:11:08 INFO  No running Bloop server found, starting one.
+2026.06.04 14:11:08 INFO  Starting compilation server
+2026.06.04 14:11:09 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/robbetiteca/projects/school/thesis/ecosystem-randomized-cache/.metals/bsp.trace.json or /Users/robbetiteca/Library/Caches/org.scalameta.metals/bsp.trace.json
+2026.06.04 14:11:09 INFO  time: Connected to build server in 1.33s
+2026.06.04 14:11:09 INFO  Connected to Build server: Bloop v2.0.19
+2026.06.04 14:11:11 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2026.06.04 14:11:11 INFO  time: indexed workspace in 1.49s
+2026.06.04 14:11:11 INFO  compiling core (1 scala source)
+2026.06.04 14:11:13 WARN  one feature warning; re-run with -feature for details
+2026.06.04 14:11:13 INFO  time: compiled core in 2.09s
+Jun 04, 2026 2:18:13 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 26
+2026.06.04 14:18:27 INFO  compiling core (1 scala source)
+2026.06.04 14:18:28 WARN  one feature warning; re-run with -feature for details
+2026.06.04 14:18:28 INFO  time: compiled core in 1.28s
+2026.06.04 14:24:49 INFO  compiling core (1 scala source)
+2026.06.04 14:24:50 WARN  one feature warning; re-run with -feature for details
+2026.06.04 14:24:50 INFO  time: compiled core in 1.16s
+2026.06.04 14:24:58 INFO  compiling core (1 scala source)
+2026.06.04 14:24:58 WARN  one feature warning; re-run with -feature for details
+2026.06.04 14:24:58 INFO  time: compiled core in 0.78s

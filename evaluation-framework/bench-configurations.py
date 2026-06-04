@@ -35,40 +35,7 @@ class Configuration:
     invalid_tags: int
 
 ### CONFIGURATIONS ###
-configurations: list[Configuration] = [
-    # Baseline
-    Configuration(16, 2, 1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-
-    # Knob 1: Ways (skews=1, no other knobs)
-    Configuration(16, 1,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 4,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 8,   1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 16,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 32,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 64,  1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 128, 1, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-
-    # Knob 2: Skews (ways=2, no other knobs)
-    Configuration(16, 2, 2,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 2, 4,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 2, 8,  EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 2, 16, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-
-    # Knob 3: Invalid tags (ways=2, skews=2, GLRU+LA as required by paper)
-    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 4),
-    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 8),
-    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 16),
-    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.LA, 32),
-
-    # Knob 4: Replacement policy (ways=2, skews=2, everything else fixed)
-    Configuration(16, 2, 2, EvictionPolicy.LRAN, InsertionPolicy.RAN, SkewApproach.RS, 0),
-
-    # Knob 5: Eviction locality — LE vs GE (ways=2, skews=2)
-    Configuration(16, 2, 2, EvictionPolicy.GRAN, InsertionPolicy.LRU, SkewApproach.RS, 0),
-    Configuration(16, 2, 2, EvictionPolicy.GLRU, InsertionPolicy.LRU, SkewApproach.RS, 0),
-
-    # Knob 6: Skew selection — RS vs LA (ways=2, skews=2)
-    Configuration(16, 2, 2, EvictionPolicy.LLRU, InsertionPolicy.LRU, SkewApproach.LA, 0),
+configurations = [
 ]
 
 ### LOGIC ###
@@ -90,7 +57,8 @@ try:
     print("Making benchmarks...")
     os.chdir("/ecosystem/benchmarks/embench")
     subprocess.run(['make'], check=True, stdout=subprocess.DEVNULL)
-    for j in range(0, 10):
+
+    for j in range(0, 3):
         os.makedirs(f'/ecosystem/scripts/output/bench/{j}', exist_ok=True)
         for idx, i in enumerate(configurations):
             # Modify Configuration
@@ -127,10 +95,10 @@ try:
                 try:
                     with open(f"/ecosystem/scripts/output/cost/cost_{i.sets}_{i.ways}_{i.skews}_{i.eviction_policy}_{i.insertion_policy}_{i.skew_approach}_{i.invalid_tags}.txt", 'w', encoding="UTF-8") as file:
                         subprocess.run(['/ecosystem/.venv/bin/python3', '/ecosystem/eval-hd/eval-hd.py', '--cell-library', './eval-hd/freepdk-45nm/stdcells.lib', '/ecosystem/core/Core.v'], check=True, stdout=file)
+
                 except Exception as e:
                     print(f"Cost analysis error: {e}\n")
                     cost_error += 1
-
             print(f"Starting benchmark {idx} iteration {j}")
             os.chdir("/ecosystem/benchmarks/embench")
             try:

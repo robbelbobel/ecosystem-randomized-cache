@@ -1,0 +1,972 @@
+error id: 74F9E9F2281CAD078E9ED1A50EC7004D
+file://<WORKSPACE>/core/src/main/scala/riscv/plugins/Cache.scala
+### java.util.NoSuchElementException: None.get
+
+occurred in the presentation compiler.
+
+
+
+action parameters:
+offset: 12409
+uri: file://<WORKSPACE>/core/src/main/scala/riscv/plugins/Cache.scala
+text:
+```scala
+package riscv.plugins
+
+import riscv._
+import spinal.core._
+import spinal.lib._
+import riscv.BaseIsa.RV32E.xlen
+import scala.util.Random
+import spinal.core.sim.SimDataPimper
+
+object EvictionPolicy extends SpinalEnum {
+  val GRAN, GLRU, LRAN, LLRU =
+    newElement() // Global Random, Global Least Recently Used, Local Random, Local Least Recently Used
+}
+
+object InsertionPolicy extends SpinalEnum {
+  val RAN, LRU = newElement() // Random, Least Recently Used
+}
+
+object SkewApproach extends SpinalEnum {
+  val RS, LA = newElement() // Random Selection, Load Aware
+}
+
+class Cache(
+    sets: Int,
+    ways: Int,
+    skews: Int,
+    busFilter: ((Stage, MemBus, MemBus) => Unit) => Unit,
+    prefetcher: Option[PrefetchService] = None,
+    maxPrefetches: Int = 1,
+    cacheable: (UInt => Bool) = (_ => True),
+    evictionPolicy: EvictionPolicy.E = EvictionPolicy.GLRU,
+    insertionPolicy: InsertionPolicy.E = InsertionPolicy.LRU,
+    skewApproach: SkewApproach.E = SkewApproach.LA,
+    invalidTags: Int = 0, // Invalid Tags
+    delay: Int = 1
+)(implicit config: Config)
+    extends Plugin[Pipeline] {
+  // Verify Security Options
+  assert(skews >= 1, "Cache must exist out of 1 or more skews")
+  assert(
+    invalidTags < sets * ways * skews,
+    "InvalidTags cannot be larger than the total amount of ways in the cache."
+  )
+
+  private val needsAge = 
+    insertionPolicy == InsertionPolicy.LRU ||   // Insertion Policy
+      (invalidTags > 0 && (                     // Eviction Policy
+        evictionPolicy == EvictionPolicy.GLRU ||
+        evictionPolicy == EvictionPolicy.LLRU))
+
+
+  private val byteIndexBits = log2Up(config.xlen / 8)
+  private val wordIndexBits = log2Up(config.memBusWidth / config.xlen)
+  private val setBits = log2Up(sets)
+
+  // Tag bits (Needed for Feistel Algorithm)
+  assert((config.xlen - byteIndexBits - wordIndexBits) % 2 == 0, "Tag bits must be divisable by 2")
+
+  private case class CacheEntry() extends Bundle {
+    val tag: UInt = UInt(config.xlen - (byteIndexBits + wordIndexBits) bits)
+    val value: UInt = UInt(config.memBusWidth bits)
+    val age: UInt =  if (needsAge) UInt(log2Up(skews * sets * ways) bits) else null
+    val valid: Bool = Bool()
+  }
+
+  case class WayResult() extends Bundle {
+    val set: UInt = UInt(log2Up(sets) bits)
+    val skew: UInt = UInt(log2Up(skews) bits)
+    val way: UInt = UInt(log2Up(ways) bits)
+    val valid: Bool = Bool()
+  }
+
+  class SkewUsage() extends Bundle {
+    val skew: UInt = UInt(log2Up(skews) bits)
+    val usage: UInt = UInt(log2Up(ways + 1) bits)
+  }
+
+  private val feistelStages = 4
+
+  private def getSetIndex(address: UInt, key: Vec[UInt]): UInt = {
+    val half = (config.xlen - byteIndexBits - wordIndexBits) / 2
+
+    // 4-Stage Feistel-Network
+    var L = address(byteIndexBits + wordIndexBits, half bits)
+    var R = address(byteIndexBits + wordIndexBits + half, half bits)
+
+    for (i <- 0 until feistelStages) {
+      val F = R ^ key(i)
+      var temp = L ^ F
+      L = R
+      R = temp
+    }
+
+    (L ## R).asUInt(setBits - 1 downto 0)
+  }
+
+  private def getTagBits(address: UInt): UInt = {
+    address(byteIndexBits + wordIndexBits until config.xlen)
+  }
+
+  // get all address bits that determine whether two addresses fall into the same cache line
+  private def getSignificantBits(address: UInt, key: Vec[UInt]): UInt = {
+    U(getTagBits(address) ## getSetIndex(address, key))
+  }
+
+  private def connect(_s: Stage, internal: MemBus, external: MemBus): Unit = {
+    val cacheArea = pipeline plug new Area {
+      // Initialize Key (4 Stages like CAESER)
+      private val key =
+        Vec.fill(feistelStages)(Reg(UInt((config.xlen - byteIndexBits - wordIndexBits) / 2 bits)))
+
+      for (i <- 0 until feistelStages) {
+        key(i) := scala.util.Random.nextInt(
+          1 << ((config.xlen - byteIndexBits - wordIndexBits) / 2)
+        )
+      }
+
+      private val totalWays: Int = ways * skews * sets
+
+      private val idWidth = internal.config.idWidth
+      private val maxId = UInt(idWidth bits).maxValue.intValue()
+
+      private val cache =
+        Vec.fill(skews)(Vec.fill(sets)(Vec.fill(ways)(RegInit(CacheEntry().getZero))))
+
+      private val cacheHits = RegInit(UInt(config.xlen bits).getZero)
+      private val cacheMisses = RegInit(UInt(config.xlen bits).getZero)
+      private val forwardedLoads = RegInit(UInt(config.xlen bits).getZero)
+      private val externalId = RegInit(UInt(external.config.idWidth bits).getZero)
+
+      private val storeInCycle = Bool()
+      storeInCycle := False
+
+      private val outstandingPrefetches = RegInit(UInt(log2Up(maxPrefetches + 1) bits).getZero)
+      private val incrementOutstandingPrefetches = Bool()
+      private val decrementOutstandingPrefetches = Bool()
+      incrementOutstandingPrefetches := False
+      decrementOutstandingPrefetches := False
+
+      // RNG
+      private val rngState =
+        RegInit(U(BigInt(config.xlen * 2, scala.util.Random), config.xlen * 2 bits))
+      private val rngMutliplier = BigInt(config.xlen * 2, scala.util.Random)
+      private val rngIncrement = BigInt(config.xlen * 2, scala.util.Random) | 1 // odd!
+
+      private def rotr32(x: UInt, r: UInt): UInt = {
+        (x >> r).resize(config.xlen bits) | (x << (config.xlen - r)).resize(config.xlen bits)
+      }
+
+      private def pcg32(): UInt = {
+        val count = rngState >> 59 // 64 - 59 = 5 -> 5 bit rotation (32 bit possible rotations)
+
+        val x = rngState ^ (rngState >> 18).resize(config.xlen * 2 bits) // 18 = (64 - 27)/2
+        rngState := (rngState * rngMutliplier + rngIncrement).resize(config.xlen * 2 bits)
+
+        rotr32((x >> 27).resize(config.xlen bits), count)
+      }
+
+      private var rngOutput = pcg32();
+
+      // Valid Tag Counter
+      private val tagEvicted = Bool() // Through Eviction
+      private val tagInvalidated = Bool() // Through e.g. write
+      private val tagInserted = Bool() // Newly Inserted Tags (former invalid tags)
+      private val validTags = RegInit(UInt(log2Up(sets * skews * ways + 1) bits).getZero)
+
+      tagEvicted := False
+      tagInvalidated := False
+      tagInserted := False
+      validTags := validTags - tagEvicted.asUInt.resized - tagInvalidated.asUInt.resized + tagInserted.asUInt.resized
+
+      private val lastInsertionSkew = RegInit(UInt(log2Up(skews) bits).getZero)
+      private val lastInsertionSet = RegInit(UInt(log2Up(sets) bits).getZero)
+
+      if (invalidTags > 0) {
+        when(validTags > totalWays - invalidTags) {
+          if (evictionPolicy == EvictionPolicy.GLRU) {
+            evictWayGLRU();
+          }
+          if (evictionPolicy == EvictionPolicy.GRAN) {
+            evictWayGRAN();
+          }
+          if (evictionPolicy == EvictionPolicy.LLRU) {
+            evictWayLLRU();
+          }
+          if (evictionPolicy == EvictionPolicy.LRAN) {
+            evictWayLRAN();
+          }
+        }
+      }
+
+      // this logic is to avoid problems when incrementing and decrementing in the same cycle
+      when(incrementOutstandingPrefetches && !decrementOutstandingPrefetches) {
+        outstandingPrefetches := outstandingPrefetches + 1
+      } elsewhen (!incrementOutstandingPrefetches && decrementOutstandingPrefetches) {
+        outstandingPrefetches := outstandingPrefetches - 1
+      }
+
+      private def getSkewUsage(set: UInt, skew: UInt): UInt = {
+        // Count valid ways in provided skew
+        val counts = (0 until ways).map { i =>
+          cache(skew)(set)(i).valid.asUInt.resized
+        }
+
+        counts.reduceBalancedTree((_ + _)).resize(log2Up(ways + 1) bits)
+      }
+
+      private def getSkew(set: UInt): UInt = {
+        assert(skews >= 2) // This function should only be called when multiple skews are used
+
+        if (skewApproach == SkewApproach.RS) {
+          // Random Selection
+          (rngOutput % skews).resize(log2Up(skews) bits)
+        } else {
+          // Load Aware
+          // Calculate usage of skews
+          val usage = (0 until skews).map { i =>
+            val s = new SkewUsage()
+            s.skew := U(i, log2Up(skews) bits)
+            s.usage := getSkewUsage(set, U(i, log2Up(skews) bits))
+            s
+          }
+
+          // Find skew with lowest usage
+          val best = usage.reduceBalancedTree((a, b) =>
+            Mux(a.usage === b.usage, (Mux(rngOutput(0), a, b)), Mux(a.usage < b.usage, a, b))
+          )
+
+          best.skew
+        }
+      }
+
+      private def oldestWayGlobal(): WayResult = {
+        val result = WayResult()
+        result.skew := 0
+        result.set := 0
+        result.way := 0
+        result.valid := False
+
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).valid && cache(k)(j)(i).age === (validTags - 1)) {
+                result.skew := k
+                result.set := j
+                result.way := i
+                result.valid := True
+              }
+            }
+          }
+        }
+
+        assert(result.valid, "No global oldest way found!")
+
+        result
+      }
+
+      private def oldestWayLocal(skew: UInt, set: UInt): WayResult = {
+        val result = WayResult()
+        result.skew := skew
+        result.set := set
+        result.valid := True
+
+        // Find Oldest Way
+        result.way := (0 until ways)
+          .map(i => U(i, log2Up(ways) bits))
+          .reduceBalancedTree((a, b) =>
+            Mux((cache(skew)(set)(a).valid ## cache(skew)(set)(a).age).asUInt > 
+              (cache(skew)(set)(b).valid ## cache(skew)(set)(b).age).asUInt, a, b)
+          )
+
+        result
+      }
+
+      /** Global Eviction * */
+      private def increaseAgesUpTo(oldest: UInt): Unit = {
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).age < oldest) {
+                cache(k)(j)(i).age := (cache(k)(j)(i).age + 1).resized
+              }
+            }
+          }
+        }
+      }
+
+      private def decreaseAgesUntil(youngest: UInt): Unit = {
+        for (k <- 0 until skews) {
+          for (j <- 0 until sets) {
+            for (i <- 0 until ways) {
+              when(cache(k)(j)(i).age > youngest) {
+                cache(k)(j)(i).age := (cache(k)(j)(i).age - 1).resized
+              }
+            }
+          }
+        }
+      }
+
+      /** GLOBAL EVICTION * */
+      private def evictWayGRAN(): WayResult = {
+        // Evicts a Way Globally -> Choose Randomly
+        val result = WayResult()
+
+        result.way := rngOutput(log2Up(ways) - 1 downto 0).resized
+        result.skew := rngOutput(log2Up(ways) + log2Up(skews) - 1 downto log2Up(ways)).resized
+        result.set := rngOutput(
+          log2Up(sets) + log2Up(ways) + log2Up(skews) - 1 downto log2Up(ways) + log2Up(skews)
+        ).resized
+
+        // Evict Entry
+        when (cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+
+          if (needsAge){
+            decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+          }
+        }
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      private def evictWayGLRU(): WayResult = {
+        // Evicts a Way Globally with LRU
+        val result = oldestWayGlobal()
+
+        // Evict Entry
+        tagEvicted := True
+        if (needsAge){
+          decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+        }
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      /** LOCAL EVICTION * */
+      private def evictWayLRAN(): WayResult = {
+        // Randomly Evict Way Locally
+        val result = WayResult()
+
+        result.way := rngOutput(log2Up(ways) - 1 downto 0).resized
+        result.skew := lastInsertionSkew
+        result.set := lastInsertionSet
+
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+          if (needsAge) {
+            decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+          }
+        }
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      private def evictWayLLRU(): WayResult = {
+        // Evicts a Way Globally with LRU
+        val result = oldestWayLocal(lastInsertionSkew, lastInsertionSet)
+
+        // Evict Entry
+        when(cache(result.skew)(result.set)(result.way).valid) {
+          tagEvicted := True
+          if (ne@@)
+          decreaseAgesUntil(cache(result.skew)(result.set)(result.way).age)
+        }
+
+        cache(result.skew)(result.set)(result.way).valid := False
+
+        result
+      }
+
+      private val sendingImmediateCmd = Bool()
+      private val sendingBufferedCmd = Reg(Bool()).init(False)
+      private val cmdBuffer = Reg(MemBusCmd(internal.config))
+
+      // rsp sending buffer
+      private val sendingRsp = Bool()
+      sendingRsp := False
+      private val alreadySendingRsp = Reg(Bool()).init(False)
+      private val rspBuffer = Reg(MemBusRsp(internal.config))
+      private val returningCache = Reg(Bool()).init(False)
+
+      // Delay cache response with a fixed delay
+      // Note that a minimal delay of 1 clock cycle is required to prevent
+      // combinatorial loops in case of multiple dbus filters.
+      private val internalRspBuffer = Stream(MemBusRsp(internal.config))
+      internal.rsp << internalRspBuffer.delay(delay)
+
+      // initial state: not sending or acknowledging anything
+      internalRspBuffer.valid := False
+      internalRspBuffer.payload.assignDontCare()
+      internal.cmd.ready := False
+      external.cmd.valid := False
+      external.cmd.payload.assignDontCare()
+      external.rsp.ready := False
+
+      sendingImmediateCmd := False
+
+      private case class OutstandingTracker() extends Bundle {
+        val address: UInt = UInt(config.xlen bits)
+        val storeInvalidated: Bool = Bool()
+        val pending: Bool = Bool()
+        val isPrefetch: Bool = Bool()
+        val internalIds: Bits = Bits(1 << internal.config.idWidth bits)
+      }
+
+      private val outstandingLoads = Vec.fill(maxId + 1)(RegInit(OutstandingTracker().getZero))
+
+      private def forwardRspToInternal(): Unit = {
+        sendingRsp := True
+        internalRspBuffer.valid := True
+
+        internalRspBuffer.rdata := external.rsp.rdata
+        // the index of 1's in internalIds indicate to which internal ids the response should be forwarded
+        val internalId = OHToUInt(OHMasking.first(outstandingLoads(external.rsp.id).internalIds))
+        internalRspBuffer.id := internalId
+        when(internalRspBuffer.ready) {
+          // set the bit to 0 once it has been forwarded
+          outstandingLoads(external.rsp.id).internalIds(internalId) := False
+        }
+      }
+
+      private def insertRspInCache(address: UInt): Unit = {
+        val hit = wayForAddress(address)
+
+        when(hit.valid && cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).valid) {
+          // Rsp already stored in cache -> Decrease Age Only
+
+          if (needsAge) {
+            increaseAgesUpTo(
+              cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).age
+            )
+
+            cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).age := U(0).resized
+          }
+
+          cache(hit.payload.skew)(hit.payload.set)(hit.payload.way).value := external.rsp.rdata
+        }
+
+        outstandingLoads(external.rsp.id).pending := False
+        outstandingLoads(external.rsp.id).storeInvalidated := False
+        // make sure we don't insert values that have been overwritten with a store
+        // either before or in the current cycle
+        when(
+          !outstandingLoads(external.rsp.id).storeInvalidated &&
+            cacheable(address) &&
+            !(storeInCycle &&
+              getSignificantBits(address, key) === getSignificantBits(internal.cmd.address, key)) &&
+            !hit.valid
+        ) {
+          val setIndex = getSetIndex(address, key)
+          val tag = getTagBits(address)
+          val skew = if (skews >= 2) getSkew(setIndex) else U(0, log2Up(skews) bits)
+
+          val found = Bool()
+          found := False
+
+          val freeidx = UInt(log2Up(ways) bits)
+          freeidx := 0
+
+          for (i <- 0 until ways) {
+            when(!cache(skew)(setIndex)(i).valid) {
+              freeidx := i
+              found := True
+            }
+          }
+
+          when(found) {
+            if (needsAge){
+              increaseAgesUpTo((skews * sets * ways) - 1)
+              cache(skew)(setIndex)(freeidx).age := U(0).resized
+            }
+
+            // Free Entry Found -> Insert Here
+            cache(skew)(setIndex)(freeidx).valid := True
+            cache(skew)(setIndex)(freeidx).tag := tag
+            cache(skew)(setIndex)(freeidx).value := external.rsp.rdata
+
+            // Updated TagInserted
+            tagInserted := True
+
+            if (invalidTags > 0) {
+              lastInsertionSet := setIndex
+              lastInsertionSkew := skew
+            }
+          }
+
+          when(!found) {
+            // No Free Ways -> Use Replacement Policy
+            if (insertionPolicy == InsertionPolicy.LRU) {
+              // Least Recently Used Approach
+              val wayResult = oldestWayLocal(skew, setIndex)
+
+              if (needsAge){
+                increaseAgesUpTo(cache(wayResult.skew)(setIndex)(wayResult.way).age)
+                cache(wayResult.skew)(setIndex)(wayResult.way).age := U(0).resized
+              }
+
+              cache(wayResult.skew)(setIndex)(wayResult.way).valid := True
+              cache(wayResult.skew)(setIndex)(wayResult.way).tag := tag
+              cache(wayResult.skew)(setIndex)(wayResult.way).value := external.rsp.rdata
+            } else {
+              // Random Approach
+              val wayResult = WayResult()
+
+              wayResult.set := setIndex
+              wayResult.way := rngOutput(
+                log2Up(ways) downto 0
+              ).resized // Prevent assignment overlap
+              wayResult.skew := skew
+
+              if (needsAge){
+                increaseAgesUpTo(cache(wayResult.skew)(setIndex)(wayResult.way).age)
+                cache(wayResult.skew)(setIndex)(wayResult.way).age := U(0).resized
+              }
+
+              cache(wayResult.skew)(setIndex)(wayResult.way).valid := True
+              cache(wayResult.skew)(setIndex)(wayResult.way).tag := tag
+              cache(wayResult.skew)(setIndex)(wayResult.way).value := external.rsp.rdata
+            }
+          }
+        }
+
+        external.rsp.ready := True
+      }
+
+      // handling an incoming result from the memory
+      when(external.rsp.valid) {
+        val address = outstandingLoads(external.rsp.id).address
+
+        when(!alreadySendingRsp) {
+          prefetcher foreach { pref =>
+            when(outstandingLoads(external.rsp.id).isPrefetch) {
+              // inform prefetcher of prefetch response from memory
+              pref.notifyPrefetchResponseFromMemory(address, external.rsp.rdata)
+              // subscract 1 from outstandingPrefetches
+              decrementOutstandingPrefetches := True
+            } otherwise {
+              // inform prefetcher of load response from memory
+              pref.notifyLoadResponseFromMemory(address, external.rsp.rdata)
+            }
+          }
+        }
+
+        when(outstandingLoads(external.rsp.id).internalIds === 0) {
+          // store result in cache without forwarding
+          insertRspInCache(address)
+        } otherwise {
+          // forward result and store in cache
+          forwardRspToInternal()
+          when(
+            // when there is only one id left to forward, put result in cache and inform external bus we are done
+            internalRspBuffer.ready && CountOne(outstandingLoads(external.rsp.id).internalIds) === 1
+          ) {
+            insertRspInCache(address)
+            alreadySendingRsp := False
+          } otherwise {
+            alreadySendingRsp := True
+          }
+        }
+      }
+
+      private def returnFromCache(cacheLine: CacheEntry): Unit = {
+        // result served from cache
+        when(!returningCache) {
+          cacheHits := cacheHits + 1
+          internal.cmd.ready := True
+          rspBuffer.id := internal.cmd.id
+          rspBuffer.rdata := cacheLine.value
+          when(!sendingRsp) {
+            internalRspBuffer.valid := True
+            internalRspBuffer.id := internal.cmd.id
+            internalRspBuffer.rdata := cacheLine.value
+            when(!internalRspBuffer.ready) {
+              returningCache := True
+            }
+          } otherwise {
+            returningCache := True
+          }
+        }
+        // if buffer is currently full, we do not ack the cmd, it will stay on the bus for the next cycle
+      }
+
+      when(returningCache && !sendingRsp) {
+        // when not forwarding rsp but have a stored cache hit, return that
+        internalRspBuffer.valid := True
+        internalRspBuffer.payload := rspBuffer
+        when(internalRspBuffer.ready) {
+          returningCache := False
+        }
+      }
+
+      private def initiateCmdForwarding(): Unit = {
+        when(!sendingBufferedCmd) {
+          sendingImmediateCmd := True
+          internal.cmd.ready := True
+          external.cmd.valid := True
+
+          cmdBuffer := external.cmd.payload
+
+          external.cmd.address := internal.cmd.address
+          external.cmd.id := externalId
+
+          if (internal.config.readWrite) {
+            external.cmd.write := internal.cmd.write
+            external.cmd.wdata := internal.cmd.wdata
+            external.cmd.wmask := internal.cmd.wmask
+
+            when(!internal.cmd.write) {
+              outstandingLoads(externalId).address := internal.cmd.address
+              outstandingLoads(externalId).pending := True
+              outstandingLoads(externalId).isPrefetch := False
+              outstandingLoads(externalId).internalIds := B(0).resized
+              outstandingLoads(externalId).internalIds(internal.cmd.id) := True
+              externalId := externalId + 1
+            }
+          } else {
+            outstandingLoads(externalId).address := internal.cmd.address
+            outstandingLoads(externalId).pending := True
+            outstandingLoads(externalId).isPrefetch := False
+            outstandingLoads(externalId).internalIds := B(0).resized
+            outstandingLoads(externalId).internalIds(internal.cmd.id) := True
+            externalId := externalId + 1
+          }
+          when(!external.cmd.ready) {
+            sendingBufferedCmd := True
+          }
+        }
+      }
+
+      when(sendingBufferedCmd) {
+        external.cmd.valid := True
+        external.cmd.payload := cmdBuffer
+        when(external.cmd.ready) {
+          sendingBufferedCmd := False
+        }
+      }
+
+      private def wayForAddress(address: UInt): Flow[WayResult] = {
+        val setIndex = getSetIndex(address, key)
+        val tag = getTagBits(address)
+        val result = Flow(WayResult())
+        result.setIdle()
+        for (j <- 0 until skews) {
+          for (i <- 0 until ways) {
+            when(cache(j)(setIndex)(i).valid && cache(j)(setIndex)(i).tag === tag) {
+              val wayResult = WayResult()
+              wayResult.set := getSetIndex(address, key)
+              wayResult.skew := j
+              wayResult.way := i
+              result.push(wayResult)
+            }
+          }
+        }
+
+        result
+      }
+
+      prefetcher foreach { pref =>
+        when(
+          !sendingBufferedCmd && !sendingImmediateCmd && outstandingPrefetches < maxPrefetches && pref.hasPrefetchTarget
+        ) {
+          when(!outstandingLoads(externalId).pending) {
+            // at this point the cache is ready to send a prefetch command to the memory
+            // getNextPrefetchTarget should not be called before the cache is ready to send the command
+            // otherwise the prefetch may get lost
+            val prefetchAddress = pref.getNextPrefetchTarget
+
+            when(cacheable(prefetchAddress)) {
+              val targetWay = wayForAddress(prefetchAddress)
+              val setIndex = getSetIndex(prefetchAddress, key)
+              val tagBits = getTagBits(prefetchAddress)
+
+              val alreadyPending = False
+
+              // find out if a load request for the given address is already pending
+              for (i <- 0 until outstandingLoads.length) {
+                val load = outstandingLoads(i)
+                when(
+                  getSignificantBits(load.address, key) === U(
+                    tagBits ## setIndex
+                  ) && load.pending && !load.storeInvalidated
+                ) {
+                  alreadyPending := True
+                }
+              }
+              when(!targetWay.valid && !alreadyPending) {
+                // add 1 to outstandingPrefetches
+                incrementOutstandingPrefetches := True
+
+                externalId := externalId + 1
+
+                external.cmd.valid := True
+                external.cmd.address := prefetchAddress
+                external.cmd.id := externalId
+                cmdBuffer := external.cmd.payload
+
+                outstandingLoads(externalId).address := prefetchAddress
+                outstandingLoads(externalId).pending := True
+                outstandingLoads(externalId).internalIds := B(0).resized
+                outstandingLoads(externalId).isPrefetch := True
+
+                when(!external.cmd.ready) {
+                  sendingBufferedCmd := True
+                }
+              }
+            }
+          }
+        }
+      }
+
+      private def getResult(address: UInt): Unit = {
+        // inform prefetcher of load request
+        prefetcher foreach { pref =>
+          pref.notifyLoadRequest(address)
+        }
+
+        val targetWay = wayForAddress(address) // Flow[WayResult]
+        val setIndex = getSetIndex(address, key)
+        val cacheSet = cache(targetWay.skew)(setIndex)
+        val tagBits = getTagBits(address)
+
+        when(targetWay.valid) {
+          if (needsAge){
+            increaseAgesUpTo(
+              cacheSet(targetWay.payload.way).age
+            )
+
+            cacheSet(targetWay.payload.way).age := U(0).resized
+          }
+
+          returnFromCache(cacheSet(targetWay.payload.way))
+        } otherwise {
+          val alreadyPending = False
+          for (i <- 0 until outstandingLoads.length) {
+            val load = outstandingLoads(i)
+            when(
+              getSignificantBits(load.address, key) === U(
+                tagBits ## setIndex
+              ) && load.pending && !load.storeInvalidated
+            ) {
+              alreadyPending := True
+              // if the load is already pending but result not yet received: mark it to be forwarded + increase cache misses
+              when(
+                !(external.rsp.valid && getSignificantBits(
+                  load.address,
+                  key
+                ) === getSignificantBits(
+                  outstandingLoads(external.rsp.id).address,
+                  key
+                ))
+              ) {
+                load.internalIds(internal.cmd.id) := True
+                cacheMisses := cacheMisses + 1
+                forwardedLoads := forwardedLoads + 1
+                internal.cmd.ready := True
+              }
+            }
+          }
+          // there's no pending load for the same cache line and the bus id is free:
+          when(!alreadyPending && !outstandingLoads(externalId).pending) {
+            // initiateCmdForwarding() will only go through when !sendingBufferedCmd,
+            // also add this check here to only increase cache misses once per request
+            when(!sendingBufferedCmd) {
+              // increase cache misses
+              cacheMisses := cacheMisses + 1
+            }
+
+            // forward cmd to external bus
+            initiateCmdForwarding()
+          }
+        }
+      }
+
+      // handling a load/write request from the CPU
+      when(internal.cmd.valid) {
+        val indexBits = getSetIndex(internal.cmd.address, key)
+        val tagBits = getTagBits(internal.cmd.address)
+
+        if (internal.config.readWrite) {
+          when(internal.cmd.write) {
+            storeInCycle := True
+            // write command: invalidates line and forwards to external bus
+            for (j <- 0 until skews) {
+              for (i <- 0 until ways) {
+                when(cache(j)(indexBits)(i).tag === tagBits) {
+                  when(cache(j)(indexBits)(i).valid === True) {
+                    // Invalidate Line
+                    cache(j)(indexBits)(i).valid := False
+                    // Update Tag Invalidated
+                    tagInvalidated := True
+
+                    // Maximize Age of Line
+                    if (needsAge) {
+                      decreaseAgesUntil(cache(j)(indexBits)(i).age)
+                      cache(j)(indexBits)(i).age := U(
+                        (skews * sets * ways) - 1,
+                        log2Up(skews * sets * ways) bits
+                      )
+                    }
+                  }
+                }
+              }
+            }
+
+            for (i <- 0 until outstandingLoads.length) {
+              when(
+                getSignificantBits(outstandingLoads(i).address, key) === getSignificantBits(
+                  internal.cmd.address,
+                  key
+                ) && outstandingLoads(i).pending
+              ) {
+                outstandingLoads(i).storeInvalidated := True
+              }
+            }
+
+            initiateCmdForwarding()
+            // if currently forwarding a cmd, we do not ack it, it will stay on the bus for the next cycle
+          } otherwise {
+            getResult(internal.cmd.address)
+          }
+        } else {
+          getResult(internal.cmd.address)
+        }
+      }
+    }
+    cacheArea.setName("cache_" + external.name)
+  }
+
+  /** PHASES * */
+  override def build(): Unit = {
+    busFilter(connect)
+  }
+}
+
+```
+
+
+presentation compiler configuration:
+Scala version: 2.12.18
+Classpath:
+<WORKSPACE>/core/.bloop/core/bloop-bsp-clients-classes/classes-Metals-vCAIS3CDQtOYHaYOuh03Pw== [exists ], <HOME>/Library/Caches/bloop/semanticdb/com.sourcegraph.semanticdb-javac.0.11.2/semanticdb-javac-0.11.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.18/scala-library-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-core_2.12/1.13.0/spinalhdl-core_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-lib_2.12/1.13.0/spinalhdl-lib_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-plugin_2.12/1.13.0/spinalhdl-idsl-plugin_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-sim_2.12/1.13.0/spinalhdl-sim_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.2.10/scalactic_2.12-3.2.10.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.18/scala-reflect-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/scopt/scopt_2.12/4.1.0/scopt_2.12-4.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.12/0.3.0/sourcecode_2.12-0.3.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.18/scala-compiler-2.12.18.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/spinalhdl/spinalhdl-idsl-payload_2.12/1.13.0/spinalhdl-idsl-payload_2.12-1.13.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/openhft/affinity/3.23.2/affinity-3.23.2.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.5/slf4j-simple-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/oshi/oshi-core/6.4.0/oshi-core-6.4.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/2.1.0/scala-xml_2.12-2.1.0.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.5/slf4j-api-2.0.5.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar [exists ], <HOME>/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.12.1/jna-platform-5.12.1.jar [exists ]
+Options:
+-Yrangepos -Xplugin-require:semanticdb
+
+
+
+
+#### Error stacktrace:
+
+```
+scala.None$.get(Option.scala:529)
+	scala.None$.get(Option.scala:527)
+	scala.reflect.macros.runtime.MacroRuntimes$MacroRuntimeResolver.<init>(MacroRuntimes.scala:63)
+	scala.reflect.macros.runtime.MacroRuntimes.$anonfun$standardMacroRuntime$3(MacroRuntimes.scala:48)
+	scala.collection.mutable.MapLike.getOrElseUpdate(MapLike.scala:209)
+	scala.collection.mutable.MapLike.getOrElseUpdate$(MapLike.scala:206)
+	scala.collection.mutable.AbstractMap.getOrElseUpdate(Map.scala:85)
+	scala.reflect.macros.runtime.MacroRuntimes.standardMacroRuntime(MacroRuntimes.scala:48)
+	scala.reflect.macros.runtime.MacroRuntimes.standardMacroRuntime$(MacroRuntimes.scala:41)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.standardMacroRuntime(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.AnalyzerPlugins$$anon$12.default(AnalyzerPlugins.scala:473)
+	scala.tools.nsc.typechecker.AnalyzerPlugins$$anon$12.default(AnalyzerPlugins.scala:470)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.invoke(AnalyzerPlugins.scala:411)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.pluginsMacroRuntime(AnalyzerPlugins.scala:470)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.pluginsMacroRuntime$(AnalyzerPlugins.scala:470)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.pluginsMacroRuntime(MetalsGlobal.scala:85)
+	scala.reflect.macros.runtime.MacroRuntimes.macroRuntime(MacroRuntimes.scala:35)
+	scala.reflect.macros.runtime.MacroRuntimes.macroRuntime$(MacroRuntimes.scala:35)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.macroRuntime(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.Macros$MacroExpander.$anonfun$expand$2(Macros.scala:653)
+	scala.tools.nsc.Global.withInfoLevel(Global.scala:227)
+	scala.tools.nsc.typechecker.Macros$MacroExpander.expand(Macros.scala:647)
+	scala.tools.nsc.typechecker.Macros$MacroExpander.apply(Macros.scala:609)
+	scala.tools.nsc.typechecker.Macros.standardMacroExpand(Macros.scala:810)
+	scala.tools.nsc.typechecker.Macros.standardMacroExpand$(Macros.scala:808)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.standardMacroExpand(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.AnalyzerPlugins$$anon$10.default(AnalyzerPlugins.scala:457)
+	scala.tools.nsc.typechecker.AnalyzerPlugins$$anon$10.default(AnalyzerPlugins.scala:454)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.invoke(AnalyzerPlugins.scala:411)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.pluginsMacroExpand(AnalyzerPlugins.scala:454)
+	scala.tools.nsc.typechecker.AnalyzerPlugins.pluginsMacroExpand$(AnalyzerPlugins.scala:454)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.pluginsMacroExpand(MetalsGlobal.scala:116)
+	scala.tools.nsc.typechecker.Macros.macroExpand(Macros.scala:799)
+	scala.tools.nsc.typechecker.Macros.macroExpand$(Macros.scala:792)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.macroExpand(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.Typers$Typer.vanillaAdapt$1(Typers.scala:1183)
+	scala.tools.nsc.typechecker.Typers$Typer.adapt(Typers.scala:1246)
+	scala.tools.nsc.typechecker.Typers$Typer.adapt(Typers.scala:1219)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch.typedImplicit1(Implicits.scala:779)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch.typedImplicit0(Implicits.scala:716)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch.scala$tools$nsc$typechecker$Implicits$ImplicitSearch$$typedImplicit(Implicits.scala:541)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch$ImplicitComputation.rankImplicits(Implicits.scala:1114)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch$ImplicitComputation.findBest(Implicits.scala:1145)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch.searchImplicit(Implicits.scala:1202)
+	scala.tools.nsc.typechecker.Implicits$ImplicitSearch.bestImplicit(Implicits.scala:1598)
+	scala.tools.nsc.typechecker.Implicits.inferImplicit1(Implicits.scala:111)
+	scala.tools.nsc.typechecker.Implicits.inferImplicit(Implicits.scala:93)
+	scala.tools.nsc.typechecker.Implicits.inferImplicit$(Implicits.scala:90)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.inferImplicit(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.Implicits.inferImplicitFor(Implicits.scala:48)
+	scala.tools.nsc.typechecker.Implicits.inferImplicitFor$(Implicits.scala:47)
+	scala.meta.internal.pc.MetalsGlobal$MetalsInteractiveAnalyzer.inferImplicitFor(MetalsGlobal.scala:85)
+	scala.tools.nsc.typechecker.Typers$Typer.$anonfun$applyImplicitArgs$2(Typers.scala:263)
+	scala.tools.nsc.typechecker.Typers$Typer.applyImplicitArgs(Typers.scala:256)
+	scala.tools.nsc.typechecker.Typers$Typer.$anonfun$adapt$1(Typers.scala:900)
+	scala.tools.nsc.typechecker.Typers$Typer.adaptToImplicitMethod$1(Typers.scala:491)
+	scala.tools.nsc.typechecker.Typers$Typer.adapt(Typers.scala:1242)
+	scala.tools.nsc.typechecker.Typers$Typer.typed(Typers.scala:5826)
+	scala.tools.nsc.typechecker.Typers$Typer.typedStat$1(Typers.scala:5876)
+	scala.tools.nsc.typechecker.Typers$Typer.$anonfun$typedStats$10(Typers.scala:3356)
+	scala.tools.nsc.typechecker.Typers$Typer.typedStats(Typers.scala:3356)
+	scala.tools.nsc.typechecker.Typers$Typer.typedTemplate(Typers.scala:2038)
+	scala.tools.nsc.typechecker.Typers$Typer.typedClassDef(Typers.scala:1851)
+	scala.tools.nsc.typechecker.Typers$Typer.typed1(Typers.scala:5733)
+	scala.tools.nsc.typechecker.Typers$Typer.typed(Typers.scala:5812)
+	scala.tools.nsc.typechecker.Typers$Typer.typedStat$1(Typers.scala:5876)
+	scala.tools.nsc.typechecker.Typers$Typer.$anonfun$typedStats$10(Typers.scala:3356)
+	scala.tools.nsc.typechecker.Typers$Typer.typedStats(Typers.scala:3356)
+	scala.tools.nsc.typechecker.Typers$Typer.typedPackageDef$1(Typers.scala:5444)
+	scala.tools.nsc.typechecker.Typers$Typer.typed1(Typers.scala:5736)
+	scala.tools.nsc.typechecker.Typers$Typer.typed(Typers.scala:5812)
+	scala.tools.nsc.typechecker.Analyzer$typerFactory$TyperPhase.apply(Analyzer.scala:114)
+	scala.tools.nsc.Global$GlobalPhase.applyPhase(Global.scala:453)
+	scala.tools.nsc.interactive.Global$TyperRun.$anonfun$applyPhase$1(Global.scala:1341)
+	scala.tools.nsc.interactive.Global$TyperRun.applyPhase(Global.scala:1341)
+	scala.tools.nsc.interactive.Global$TyperRun.typeCheck(Global.scala:1334)
+	scala.tools.nsc.interactive.Global.typeCheck(Global.scala:666)
+	scala.meta.internal.pc.Compat.$anonfun$runOutline$1(Compat.scala:50)
+	scala.collection.Iterator.foreach(Iterator.scala:943)
+	scala.collection.Iterator.foreach$(Iterator.scala:943)
+	scala.collection.AbstractIterator.foreach(Iterator.scala:1431)
+	scala.collection.IterableLike.foreach(IterableLike.scala:74)
+	scala.collection.IterableLike.foreach$(IterableLike.scala:73)
+	scala.collection.AbstractIterable.foreach(Iterable.scala:56)
+	scala.meta.internal.pc.Compat.runOutline(Compat.scala:42)
+	scala.meta.internal.pc.Compat.runOutline(Compat.scala:28)
+	scala.meta.internal.pc.Compat.runOutline$(Compat.scala:26)
+	scala.meta.internal.pc.MetalsGlobal.runOutline(MetalsGlobal.scala:39)
+	scala.meta.internal.pc.ScalaCompilerWrapper.compiler(ScalaCompilerAccess.scala:18)
+	scala.meta.internal.pc.ScalaCompilerWrapper.compiler(ScalaCompilerAccess.scala:13)
+	scala.meta.internal.pc.ScalaPresentationCompiler.$anonfun$signatureHelp$1(ScalaPresentationCompiler.scala:433)
+	scala.meta.internal.pc.CompilerAccess.withSharedCompiler(CompilerAccess.scala:148)
+	scala.meta.internal.pc.CompilerAccess.$anonfun$withNonInterruptableCompiler$1(CompilerAccess.scala:132)
+	scala.meta.internal.pc.CompilerAccess.$anonfun$onCompilerJobQueue$1(CompilerAccess.scala:209)
+	scala.meta.internal.pc.CompilerJobQueue$Job.run(CompilerJobQueue.scala:152)
+	java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	java.base/java.lang.Thread.run(Thread.java:1583)
+```
+#### Short summary: 
+
+java.util.NoSuchElementException: None.get

@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MEM_SZ 256
+#define BUF_SZ 4096
+#define REPEATS 5
 
 static volatile bool keepRunning = true;
 
@@ -9,14 +10,16 @@ static volatile bool keepRunning = true;
 int main() {
     printf("Starting pressure test...\n");
 
-    char* buff = malloc(MEM_SZ * sizeof(char));
+    char* buff = malloc(BUF_SZ * sizeof(char));
 
     volatile char sink;
 
-    int i = 0;
-    while ((i / MEM_SZ) < 3) {
-        printf("i: %i\n", i);
-        sink = buff[i++ % MEM_SZ];
+    for (int i = 0; i < REPEATS; i++) {
+        printf("Repeat %d\n", i);
+
+        for (int j = 0; j < BUF_SZ; j++){
+            sink = buff[j];
+        }
     }
 
     free(buff);
